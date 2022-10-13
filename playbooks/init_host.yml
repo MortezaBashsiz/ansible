@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  
+  vars:
+    pkgs_list:
+      - htop
+      - net-tools
+      - fail2ban
+      - iptables-persistent
+
+  roles:
+    - packages
+    - iptables
+    - fail2ban
+  

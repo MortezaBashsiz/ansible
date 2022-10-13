@@ -1,0 +1,10 @@
+---
+
+- name: Install the latest version packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop:
+    - "{{ pkgs_list }}"
+
