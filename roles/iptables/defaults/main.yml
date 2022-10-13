@@ -1,8 +1,8 @@
 ---
 
-INPUT:
-  - chains:
-    - "INPUT_SSH"
+INPUT_CHAINS:
+  - name: "INPUT_SSH"
+    policy: "ACCEPT"
+    rules:
+      - "-s 0.0.0.0/0 -p tcp --dport 22 -j ACCEPT"
 
-INPUT_SSH:
-    - "-s 0.0.0.0/0 -p tcp --dport 22 -j ACCEPT"

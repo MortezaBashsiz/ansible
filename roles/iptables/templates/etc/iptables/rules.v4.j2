@@ -8,17 +8,21 @@
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p icmp -j ACCEPT
 
-{% for input_chains in INPUT.chains %}
--A INPUT -j {{ input_chains }}
+{% for input_chain in INPUT_CHAINS %}
+:{{ input_chain.name }} {{ input_chain.policy }} [0:0]
+-A INPUT -j {{ input_chain.name }}
+{% for input_chain_rule in input_chain.rules %}
+-A {{ input_chain.name }} {{ input_chain_rule }} 
 {% endfor %}
-
+-A {{ input_chain.name }} -j RETURN
+{% endfor %}
+-A INPUT -j DROP
 
 -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A OUTPUT -o lo -j ACCEPT
 -A OUTPUT -p icmp -j ACCEPT
-
--A OUTPUT -d 8.8.8.8/32 -p tcp -m tcp --dport 53 -j ACCEPT
--A OUTPUT -d 4.2.2.4/32 -p tcp -m tcp --dport 53 -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT
+-A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
 
 COMMIT
 
