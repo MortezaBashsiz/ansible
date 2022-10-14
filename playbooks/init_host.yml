@@ -2,15 +2,12 @@
 
 - hosts: all
   
-  vars:
-    pkgs_list:
-      - htop
-      - net-tools
-      - fail2ban
-      - iptables-persistent
+  vars_files:
+    - defaults/init_host.yml
 
   roles:
     - packages
     - iptables
     - fail2ban
+    - sysctl
   

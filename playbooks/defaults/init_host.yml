@@ -1,5 +1,12 @@
 ---
 
+PKGS_LIST:
+  - htop
+  - net-tools
+  - fail2ban
+  - iptables-persistent
+  - vim
+
 INPUT_CHAINS:
   - name: "INPUT_SSH"
     policy: "ACCEPT"
@@ -22,3 +29,4 @@ FORWARD_CHAINS:
     policy: "DROP"
     rules:
       - "-s 0.0.0.0/0 -d 0.0.0.0/0 -j DROP"
+

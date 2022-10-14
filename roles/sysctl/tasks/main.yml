@@ -1,0 +1,10 @@
+---
+
+- name: sysctl config
+  template:
+    src: etc/sysctl.d/99-sysctl.conf.j2
+    dest: /etc/sysctl.d/99-sysctl.conf
+    owner: root
+    group: root
+    mode: '0644'
+

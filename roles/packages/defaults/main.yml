@@ -1,1 +1,6 @@
-pkgs_list: ""
+---
+
+PKGS_LIST:
+  - htop
+  - vim
+

@@ -6,5 +6,9 @@
     state: latest
     update_cache: yes
   loop:
-    - "{{ pkgs_list }}"
+    - "{{ PKGS_LIST }}"
 
+- name: Update all packages
+  apt:
+    name: "*"
+    state: latest

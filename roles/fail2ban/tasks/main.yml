@@ -1,0 +1,13 @@
+---
+
+- name: fail2ban config
+  template:
+    src: etc/fail2ban/jail.d/sshd.conf.j2
+    dest: /etc/fail2ban/jail.d/sshd.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    restart iptables
+    restart fail2ban
+
