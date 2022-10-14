@@ -1,0 +1,25 @@
+---
+
+- name: create lowercase 8 character name for Kubernetes pod name
+  set_fact:
+    password: "{{ lookup('ansible.builtin.password', '/dev/null chars=ascii_lowercase,ascii_lowercase,digits length=16') }}"
+
+- name: shadowsocks config
+  template:
+    src: etc/shadowsocks-libev/config.json.j2
+    dest: /etc/shadowsocks-libev/{{ item.name }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+  with_items: 
+    - "{{ SHADOWSOCKS_INSTANCES }}"
+
+- name: shadowsocks service
+  template:
+    src: lib/systemd/system/shadowsocks.service.j2
+    dest: /lib/systemd/system/shadowsocks-{{ item.name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  with_items: 
+    - "{{ SHADOWSOCKS_INSTANCES }}"

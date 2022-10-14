@@ -10,4 +10,5 @@
     - iptables
     - fail2ban
     - sysctl
+    - shadowsocks
   

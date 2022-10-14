@@ -1,0 +1,13 @@
+{
+    "server":"{{ item.server }}",
+    "server_port":{{ item.server_port }},
+    "local_port":{{ item.local_port }},
+    "password":"{{ lookup('ansible.builtin.password', '/dev/null chars=ascii_lowercase,ascii_lowercase,digits length=16') }}",
+    "timeout":{{ item.timeout }},
+    "method":"{{ item.method }}",
+    "mode":"{{ item.mode }}",
+    "fast_open":"{{ item.fast_open }}",
+    "plugin":"{{ item.plugin }}",
+    "plugin_opts":"{{ item.plugin_obfs }}",
+    "reuse_port":"{{ item.reuse_port }}"
+}
