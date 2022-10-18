@@ -1,0 +1,24 @@
+---
+
+- name: get certificates
+  shell: |
+    certbot certonly --standalone --preferred-challenges http -d {{ instance.domain }} -d www.{{ instance.domain }} --non-interactive --agree-tos -m {{ instance.email }}
+  changed_when: false
+
+- name: nginx config for {{ instance.domain }}
+  template:
+    src: etc/nginx/conf.d/specific.conf.j2
+    dest: /etc/nginx/conf.d/{{ instance.domain }}-specific.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: nginx config for {{ instance.domain }}
+  template:
+    src: etc/nginx/conf.d/nginx.conf.j2
+    dest: /etc/nginx/conf.d/{{ instance.domain }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    reload nginx

@@ -1,0 +1,5 @@
+---
+
+NGINX_INSTANCES:
+  - domain: sudoer.net
+    email: morteza.bashsiz@gmail.com

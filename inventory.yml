@@ -1,8 +1,12 @@
 ---
 
-all:
+init_hosts:
   hosts:
-    5.161.142.51:
+    167.235.195.106:
+
+sudoer:
+  hosts:
+    167.235.195.106:
 
 shadowsocks:
   hosts:

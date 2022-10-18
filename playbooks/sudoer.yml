@@ -1,9 +1,9 @@
 ---
 
-- hosts: init_hosts
+- hosts: sudoer
   
   vars_files:
-    - defaults/init_host.yml
+    - defaults/sudoer.yml
 
   roles:
     - role: packages
@@ -20,3 +20,6 @@
     - role: sysctl
       tags:
         - sysctl
+    - role: nginx
+      tags:
+        - nginx
