@@ -8,7 +8,5 @@ SHADOWSOCKS_INSTANCES:
     timeout: 60
     method: chacha20-ietf-poly1305
     mode: tcp_and_udp
-    fast_open: true
     plugin: obfs-server
     plugin_obfs: "obfs=http;obfs-host=www.google.com"
-    reuse_port: true

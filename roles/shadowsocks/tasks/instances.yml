@@ -10,6 +10,15 @@
     path: /lib/systemd/system/{{ instance.name }}.service
   register: service_file
 
+- name: shadowsocks service {{ instance.name }}
+  template:
+    src: lib/systemd/system/shadowsocks.service.j2
+    dest: /lib/systemd/system/{{ instance.name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  when: not service_file.stat.exists
+
 - name: shadowsocks config {{ instance.name }}
   template:
     src: etc/shadowsocks-libev/config.json.j2
@@ -19,11 +28,10 @@
     mode: '0644'
   when: not config_file.stat.exists
 
-- name: shadowsocks service {{ instance.name }}
-  template:
-    src: lib/systemd/system/shadowsocks.service.j2
-    dest: /lib/systemd/system/{{ instance.name }}.service
-    owner: root
-    group: root
-    mode: '0644'
-  when: not service_file.stat.exists
+- name: restart service
+  shell: |
+    systemctl daemon-realod
+    systemctl enable "{{ instance.name }}"
+    systemctl restart "{{ instance.name }}"
+  when: not config_file.stat.exists
+

@@ -1,11 +1,7 @@
 ---
 
-- name: restart iptables
-  service:
-    name: iptables
-    state: restarted
-
 - name: restart fail2ban
   service:
     name: fail2ban
     state: restarted
+    enabled: yes
