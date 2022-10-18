@@ -6,7 +6,17 @@
     - defaults/init_host.yml
 
   roles:
-    - packages
-    - iptables
-    - fail2ban
-    - sysctl
+    - role: packages
+      tags:
+        - apt
+        - packages
+    - role: iptables
+      tags:
+        - firewall
+        - iptables
+    - role: fail2ban
+      tags:
+        - fail2ban
+    - role: sysctl
+      tags:
+        - sysctl

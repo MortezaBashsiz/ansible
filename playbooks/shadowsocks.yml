@@ -6,7 +6,13 @@
     - defaults/shadowsocks.yml
 
   roles:
-    - packages
-    - iptables
-    - shadowsocks
+    - role: packages
+      tags:
+        - apt
+    - role: iptables
+      tags:
+        - firewall
+        - iptables
+    - role: shadowsocks
+        - shadowsocks
   
