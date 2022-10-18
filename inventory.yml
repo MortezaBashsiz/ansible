@@ -3,3 +3,7 @@
 all:
   hosts:
     78.46.242.102:
+
+shadowsocks:
+  hosts:
+    78.46.242.102:

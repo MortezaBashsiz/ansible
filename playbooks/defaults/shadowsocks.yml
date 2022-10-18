@@ -12,3 +12,14 @@ SHADOWSOCKS_INSTANCES:
     plugin: obfs-server
     plugin_obfs: "obfs=http;obfs-host=www.google.com"
     reuse_port: true
+  - name: shdsocks2
+    server: 0.0.0.0
+    server_port: 10082
+    local_port: 1082
+    timeout: 60
+    method: chacha20-ietf-poly1305
+    mode: tcp_and_udp
+    fast_open: true
+    plugin: obfs-server
+    plugin_obfs: "obfs=http;obfs-host=www.google.com"
+    reuse_port: true

@@ -1,5 +1,5 @@
 [Unit]
-Description=Shadowsocks {{ item.name }} Server Service
+Description=Shadowsocks {{ instance.name }} Server Service
 Documentation=man:shadowsocks-libev(8)
 After=network-online.target
 
@@ -9,7 +9,7 @@ CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 DynamicUser=true
 LimitNOFILE=32768
-ExecStart=/usr/bin/ss-server -c /etc/shadowsocks-libev/{{ item.name }}.conf
+ExecStart=/usr/bin/ss-server -c /etc/shadowsocks-libev/{{ instance.name }}.conf
 
 [Install]
 WantedBy=multi-user.target

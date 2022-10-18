@@ -1,0 +1,29 @@
+---
+
+- name: check if config file exists {{ instance.name }}
+  stat:
+    path: /etc/shadowsocks-libev/{{ instance.name }}.conf
+  register: config_file
+
+- name: check if service file exists {{ instance.name }}
+  stat:
+    path: /lib/systemd/system/{{ instance.name }}.service
+  register: service_file
+
+- name: shadowsocks config {{ instance.name }}
+  template:
+    src: etc/shadowsocks-libev/config.json.j2
+    dest: /etc/shadowsocks-libev/{{ instance.name }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+  when: not config_file.stat.exists
+
+- name: shadowsocks service {{ instance.name }}
+  template:
+    src: lib/systemd/system/shadowsocks.service.j2
+    dest: /lib/systemd/system/{{ instance.name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  when: not service_file.stat.exists

@@ -1,0 +1,10 @@
+---
+
+- hosts: shadowsocks
+  
+  vars_files:
+    - defaults/shadowsocks.yml
+
+  roles:
+    - shadowsocks
+  
