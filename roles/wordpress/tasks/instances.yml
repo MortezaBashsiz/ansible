@@ -2,11 +2,6 @@
 
 - name: check if config file exists {{ instance.name }}
   stat:
-    path: /etc/wordpress/config-www.{{ instance.name }}.php
-  register: config_file
-
-- name: check if config file exists {{ instance.name }}
-  stat:
     path: /root/.my.cnf-{{ instance.db_user }}
   register: pass_file
 
@@ -24,5 +19,4 @@
     owner: root
     group: root
     mode: '0644'
-  when: not config_file.stat.exists
 

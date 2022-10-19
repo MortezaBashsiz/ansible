@@ -43,3 +43,11 @@ DB_USERS:
   - name: sudoer_user
     priv:
       - 'sudoer_net.*:ALL,GRANT'
+
+WP_INSTANCES:
+  - name: sudoer.net
+    db: sudoer_net
+    db_user: sudoer_user
+    db_host: localhost 
+    db_charset: utf8
+

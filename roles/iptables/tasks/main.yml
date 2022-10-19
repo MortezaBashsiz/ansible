@@ -1,5 +1,13 @@
 ---
 
+- name: reload iptables
+  shell: |
+    iptables -I INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+    iptables -I OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+    systemctl enable iptables
+    iptables-restore < /etc/iptables/rules.v4    
+  changed_when: false
+
 - name: iptables config 
   template:
     src: etc/iptables/rules.v4.j2 

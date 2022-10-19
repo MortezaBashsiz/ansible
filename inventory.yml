@@ -3,6 +3,7 @@
 init_hosts:
   hosts:
     167.235.195.106:
+    78.46.242.102:
 
 sudoer:
   hosts:
