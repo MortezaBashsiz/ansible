@@ -23,7 +23,7 @@ server {
     listen 443 ssl http2;
     server_name www.{{ instance.domain }} sudoer.ir;
 
-    root /var/www/html/{{ instance.domain }};
+    root {{ instance.root }};
     index index.php;
     ssl_certificate /etc/letsencrypt/live/{{ instance.domain }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{ instance.domain }}/privkey.pem;

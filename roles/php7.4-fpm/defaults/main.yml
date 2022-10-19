@@ -1,0 +1,4 @@
+---
+
+PKGS_LIST:
+  - php7.4-fpm

@@ -1,5 +1,18 @@
 ---
 
+- name: Install the latest version packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop:
+    - "{{ PKGS_LIST }}"
+
+- name: Update all packages
+  apt:
+    name: "*"
+    state: latest
+
 - name: configuring instances
   include_tasks: instances.yml
   loop: "{{ NGINX_INSTANCES }}"

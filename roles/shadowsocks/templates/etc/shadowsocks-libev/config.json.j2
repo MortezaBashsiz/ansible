@@ -2,7 +2,7 @@
     "server":"{{ instance.server }}",
     "server_port":{{ instance.server_port }},
     "local_port":{{ instance.local_port }},
-    "password":"{{ lookup('ansible.builtin.password', '/dev/null chars=ascii_lowercase,ascii_lowercase,digits length=16') }}",
+    "password":"{{ lookup('ansible.builtin.password', '/dev/null chars=ascii_uppercase,ascii_lowercase,digits length=16') }}",
     "timeout":{{ instance.timeout }},
     "method":"{{ instance.method }}",
     "mode":"{{ instance.mode }}",

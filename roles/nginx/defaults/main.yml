@@ -1,5 +1,11 @@
 ---
 
+PKGS_LIST:
+  - nginx
+  - certbot 
+  - python3-certbot-nginx
+
 NGINX_INSTANCES:
   - domain: sudoer.net
     email: morteza.bashsiz@gmail.com
+    root: /usr/share/wordpress/

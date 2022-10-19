@@ -1,13 +1,7 @@
 ---
 
 PKGS_LIST:
-  - nginx
-  - php-fpm
-  - wordpress
-  - mariadb-server
-  - mariadb-client
-  - certbot 
-  - python3-certbot-nginx
+  - vim
 
 INPUT_CHAINS:
   - name: "INPUT_SSH"
@@ -37,3 +31,15 @@ FORWARD_CHAINS:
     rules:
       - "-s 0.0.0.0/0 -d 0.0.0.0/0 -j DROP"
 
+NGINX_INSTANCES:
+  - domain: sudoer.net
+    email: morteza.bashsiz@gmail.com
+    root: /usr/share/wordpress/
+
+DB_INSTANCES:
+  - name: sudoer_net
+
+DB_USERS:
+  - name: sudoer_user
+    priv:
+      - 'sudoer_net.*:ALL,GRANT'

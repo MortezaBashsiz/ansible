@@ -23,3 +23,13 @@
     - role: nginx
       tags:
         - nginx
+    - role: mariadb
+      tags:
+        - mariadb
+    - role: php7.4-fpm
+      tags:
+        - php7.4-fpm
+        - php-fpm
+    - role: wordpress
+      tags:
+        - wordpress

@@ -1,2 +1,12 @@
 ---
 
+PKGS_LIST:
+  - wordpress
+
+WP_INSTANCES:
+  - name: sudoer.net
+    db: sudoer_net
+    db_user: sudoer_user
+    db_host: localhost 
+    db_charset: utf8
+    
