@@ -1,5 +1,11 @@
 ---
 
+- name: packages role
+  include_role:
+    name: packages
+  vars:
+    PKGS_LIST: "{{ IPTABLES_PKGS_LIST }}"
+
 - name: reload iptables
   shell: |
     iptables -I INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT

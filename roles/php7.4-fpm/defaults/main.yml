@@ -1,4 +1,4 @@
 ---
 
-PKGS_LIST:
+PHP74FPM_PKGS_LIST:
   - php7.4-fpm

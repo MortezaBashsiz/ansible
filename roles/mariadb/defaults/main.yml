@@ -1,6 +1,6 @@
 ---
 
-PKGS_LIST:
+MARIADB_PKGS_LIST:
   - mariadb-server
   - mariadb-client
   - python3-mysqldb

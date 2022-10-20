@@ -1,17 +1,10 @@
 ---
 
-- name: Install the latest version packages
-  apt:
-    name: "{{ item }}"
-    state: latest
-    update_cache: yes
-  loop:
-    - "{{ PKGS_LIST }}"
-
-- name: Update all packages
-  apt:
-    name: "*"
-    state: latest
+- name: packages role
+  include_role:
+    name: packages
+  vars:
+    PKGS_LIST: "{{ WORDPRESS_PKGS_LIST }}"
 
 - name: configuring instances
   include_tasks: instances.yml

@@ -1,7 +1,6 @@
 ---
 
 - hosts: sudoer
-  
   vars_files:
     - defaults/sudoer.yml
 

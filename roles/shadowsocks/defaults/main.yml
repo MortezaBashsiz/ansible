@@ -1,5 +1,9 @@
 ---
 
+SHADOWSOCKS_PKGS_LIST:
+  - shadowsocks-libev
+  - simple-obfs
+
 SHADOWSOCKS_INSTANCES:
   - name: shdsocks1
     server: 0.0.0.0

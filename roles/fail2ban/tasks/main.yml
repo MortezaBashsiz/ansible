@@ -1,5 +1,11 @@
 ---
 
+- name: packages role
+  include_role:
+    name: packages
+  vars:
+    PKGS_LIST: "{{ FAIL2BAN_PKGS_LIST }}"
+
 - name: fail2ban config
   template:
     src: etc/fail2ban/jail.d/sshd.conf.j2

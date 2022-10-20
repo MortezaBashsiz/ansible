@@ -1,5 +1,11 @@
 ---
 
+IPTABLES_PKGS_LIST:
+  - htop
+  - net-tools
+  - iptables-persistent
+  - vim
+
 INPUT_CHAINS:
   - name: "INPUT_SSH"
     policy: "ACCEPT"
