@@ -7,16 +7,20 @@ V2RAY_PKGS_LIST:
 V2RAY_INSTANCES:
   - name: v2ray1
     listen: 0.0.0.0
-    port: 10081
+    port: 11081
     protocol: vmess
     clients:
       - level: 1
         alterId: 64  
+      - level: 1
+        alterId: 64  
   - name: v2ray2
     listen: 0.0.0.0
-    port: 10082
+    port: 11082
     protocol: vmess
     clients:
+      - level: 1
+        alterId: 64  
       - level: 1
         alterId: 64  
 
@@ -28,8 +32,8 @@ INPUT_CHAINS:
   - name: "INPUT_SHADOWSOCKS"
     policy: "ACCEPT"
     rules:
-      - "-s 0.0.0.0/0 -p tcp --dport 10081 -j ACCEPT"
-      - "-s 0.0.0.0/0 -p tcp --dport 10082 -j ACCEPT"
+      - "-s 0.0.0.0/0 -p tcp --dport 11081 -j ACCEPT"
+      - "-s 0.0.0.0/0 -p tcp --dport 11082 -j ACCEPT"
 
 OUTPUT_CHAINS:
   - name: "OUTPUT_WEB"

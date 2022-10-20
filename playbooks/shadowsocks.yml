@@ -14,5 +14,6 @@
         - firewall
         - iptables
     - role: shadowsocks
+      tags:
         - shadowsocks
   

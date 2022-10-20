@@ -35,3 +35,12 @@
     systemctl restart "{{ instance.name }}"
   when: not config_file.stat.exists
 
+- name: register output
+  slurp:
+    src: /etc/shadowsocks-libev/{{ instance.name }}.conf
+  register: shadowsocks_config
+
+- name: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA vmess url AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  debug:
+    msg: "{{ shadowsocks_config.content | b64decode }}"
+
