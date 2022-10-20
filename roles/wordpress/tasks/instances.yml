@@ -1,5 +1,12 @@
 ---
 
+- name: change owner of wordpress
+  file: 
+    dest: /usr/share/wordpress
+    owner: www-data
+    group: root
+    recurse: yes
+
 - name: check if config file exists {{ instance.name }}
   stat:
     path: /root/.my.cnf-{{ instance.db_user }}

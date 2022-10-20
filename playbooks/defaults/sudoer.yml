@@ -1,8 +1,5 @@
 ---
 
-PKGS_LIST:
-  - vim
-
 INPUT_CHAINS:
   - name: "INPUT_SSH"
     policy: "ACCEPT"
