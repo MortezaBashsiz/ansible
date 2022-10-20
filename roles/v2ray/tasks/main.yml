@@ -1,0 +1,31 @@
+---
+
+- name: packages role
+  include_role:
+    name: packages
+  vars:
+    PKGS_LIST: "{{ V2RAY_PKGS_LIST }}"
+
+- name: Create directory if it does not exist
+  file:
+    path: /opt/v2ray_toolbox/
+    state: directory
+    mode: '0755'
+
+- name: Copy v2ray_toolbox
+  copy:
+    src: opt/v2ray_toolbox/{{ item }}
+    dest: /opt/v2ray_toolbox/{{ item }}
+    owner: root
+    group: root
+  with_items:
+    - conf2vmess.py  
+    - lnk2htmk.py  
+    - sub2srlink.py  
+    - vmess2sub.py
+
+- name: configuring instances
+  include_tasks: instances.yml
+  loop: "{{ V2RAY_INSTANCES }}"
+  loop_control:
+    loop_var: instance

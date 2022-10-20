@@ -1,0 +1,18 @@
+[Unit]
+Description=V2Ray Service {{ instance.name }}
+Documentation=https://www.v2ray.com/ https://www.v2fly.org/
+After=network-online.target nss-lookup.target
+
+[Service]
+Type=simple
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+DynamicUser=true
+NoNewPrivileges=true
+Environment=V2RAY_LOCATION_ASSET=/etc/v2ray
+ExecStart=/usr/bin/v2ray -config /etc/v2ray/{{ instance.name }}.json
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+

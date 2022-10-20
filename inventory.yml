@@ -12,3 +12,7 @@ sudoer:
 shadowsocks:
   hosts:
     78.46.242.102:
+
+v2ray:
+  hosts:
+    65.109.4.91:

@@ -1,0 +1,52 @@
+---
+
+- name: check if config file exists {{ instance.name }}
+  stat:
+    path: /etc/v2ray/{{ instance.name }}.json
+  register: config_file
+
+- name: check if service file exists {{ instance.name }}
+  stat:
+    path: /lib/systemd/system/{{ instance.name }}.service
+  register: service_file
+
+- name: v2ray service {{ instance.name }}
+  template:
+    src: lib/systemd/system/v2ray.service.j2
+    dest: /lib/systemd/system/{{ instance.name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  when: not service_file.stat.exists
+
+- name: v2ray config {{ instance.name }}
+  template:
+    src: etc/v2ray/config.json.j2
+    dest: /etc/v2ray/{{ instance.name }}.json
+    owner: root
+    group: root
+    mode: '0644'
+  when: not config_file.stat.exists
+
+- name: restart service
+  shell: |
+    systemctl daemon-realod
+    systemctl enable "{{ instance.name }}"
+    systemctl restart "{{ instance.name }}"
+  when: not config_file.stat.exists
+
+- name: generate vmess url
+  shell: |
+    python3 /opt/v2ray_toolbox/conf2vmess.py -c /etc/v2ray/{{ instance.name }}.json -s {{ ansible_default_ipv4.address }} -p {{ instance.port }} -o /opt/v2ray_toolbox/{{ instance.name }}-vmess.json
+    python3 /opt/v2ray_toolbox/vmess2sub.py /opt/v2ray_toolbox/{{ instance.name }}-vmess.json /opt/v2ray_toolbox/{{ instance.name }}-vmess_v2rayN.html -l /opt/v2ray_toolbox/{{ instance.name }}-vmess_v2rayN.lnk
+  changed_when: false
+
+- name: register output
+  slurp:
+    src: /opt/v2ray_toolbox/{{ instance.name }}-vmess_v2rayN.lnk
+  register: vmess_url
+
+- name: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA vmess url AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  debug:
+    msg: "{{ vmess_url.content | b64decode }}"
+

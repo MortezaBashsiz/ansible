@@ -1,0 +1,28 @@
+{
+  "inbounds": [{
+    "listen": "{{ instance.listen }}",
+    "port": {{ instance.port }},
+    "protocol": "{{ instance.protocol }}",
+    "streamSettings": {},
+    "settings": {
+      "clients": [
+{% for client in {{ instance.clients }} %}
+        {
+          "id": "{{ lookup('password', '/dev/null chars=ascii_letters,digits') | to_uuid }}",
+          "level": {{ client.level }},
+          "alterId": {{ client.alterId }}
+        },
+{% endfor %}
+      ]
+    }
+  }],
+  "outbounds": [{
+    "protocol": "freedom",
+    "settings": {}
+  },{
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
+  }]
+}
+

@@ -1,0 +1,21 @@
+---
+
+V2RAY_PKGS_LIST:
+  - python3-urllib3
+  - v2ray
+
+V2RAY_INSTANCES:
+  - name: v2ray1
+    listen: "0.0.0.0"
+    port: 10081
+    protocol: "vmess"
+    clients:
+      - level: 1
+        alterId: 64  
+  - name: v2ray2
+    listen: "0.0.0.0"
+    port: 10082
+    protocol: "vmess"
+    clients:
+      - level: 1
+        alterId: 64  

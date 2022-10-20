@@ -1,0 +1,19 @@
+---
+
+- hosts: v2ray
+  
+  vars_files:
+    - defaults/v2ray.yml
+
+  roles:
+    - role: packages
+      tags:
+        - apt
+    - role: iptables
+      tags:
+        - firewall
+        - iptables
+    - role: v2ray
+      tags:
+        - v2ray
+  
