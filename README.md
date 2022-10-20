@@ -14,6 +14,9 @@ Edit and customize your inventory file like this. You can see how to put your ho
       hosts:
         5.161.142.51:
 
+    v2ray:
+      hosts:
+        5.161.142.51:
 # playbooks
 
 ## init_host.yml
@@ -28,3 +31,8 @@ This playbook configures the shadowsocks with obfs on destination host
 
     [$]> ansible-playbook  playbooks/shadowsocks.yml
 
+## v2ray.yml
+
+This playbook configures the shadowsocks with obfs on destination host
+
+    [$]> ansible-playbook  playbooks/v2ray.yml
