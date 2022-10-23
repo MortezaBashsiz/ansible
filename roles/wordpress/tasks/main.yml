@@ -1,11 +1,5 @@
 ---
 
-- name: packages role
-  include_role:
-    name: packages
-  vars:
-    PKGS_LIST: "{{ WORDPRESS_PKGS_LIST }}"
-
 - name: configuring instances
   include_tasks: instances.yml
   loop: "{{ WP_INSTANCES }}"

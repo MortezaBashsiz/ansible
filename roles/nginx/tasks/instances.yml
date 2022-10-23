@@ -1,5 +1,10 @@
 ---
 
+- name: check if www dir exists {{ instance.name }}
+  stat:
+    path: /etc/letsencrypt/live/{{ instance.domain }}/
+  register: cert_file
+
 - name: get certificates
   shell: |
     systemctl restart iptables
@@ -7,6 +12,7 @@
     certbot certonly --standalone --preferred-challenges http -d {{ instance.domain }} -d www.{{ instance.domain }} --non-interactive --agree-tos -m {{ instance.email }}
     systemctl start nginx
   changed_when: false
+  when: not cert_file.stat.exists
 
 - name: nginx config for {{ instance.domain }}
   template:

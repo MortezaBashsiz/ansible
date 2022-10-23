@@ -1,8 +1,5 @@
 ---
 
-WORDPRESS_PKGS_LIST:
-  - wordpress
-
 WP_INSTANCES:
   - name: sudoer.net
     db: sudoer_net

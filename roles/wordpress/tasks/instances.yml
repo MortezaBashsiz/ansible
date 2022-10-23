@@ -1,8 +1,28 @@
 ---
 
-- name: change owner of wordpress
+- name: check if www dir exists {{ instance.name }}
+  stat:
+    path: /home/www-data/{{ instance.name }}/www
+  register: www_file
+
+- name: Create home directory for instance {{ instance.name }}
+  file:
+    path: /home/www-data/{{ instance.name }}/www
+    state: directory
+    owner: www-data
+    group: root
+    mode: '0755'
+
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /home/www-data/{{ instance.name }}/www
+    remote_src: yes
+  when: not www_file.stat.exists
+
+- name: change owner of wordpress instance {{ instance.name }}
   file: 
-    dest: /usr/share/wordpress
+    dest: /home/www-data/{{ instance.name }}/www
     owner: www-data
     group: root
     recurse: yes
@@ -22,7 +42,7 @@
 - name: wordpress config file
   template:
     src: etc/wordpress/config.php.j2
-    dest: /etc/wordpress/config-www.{{ instance.name }}.php
+    dest: /home/www-data/{{ instance.name }}/www/wordpress/wp-config.php
     owner: root
     group: root
     mode: '0644'
