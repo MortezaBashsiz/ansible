@@ -21,7 +21,7 @@ server {
         return 444;
     }
     listen 443 ssl http2;
-    server_name www.{{ instance.domain }} sudoer.ir;
+    server_name www.{{ instance.domain }} {{ instance.domain }};
 
     root {{ instance.root }};
     index index.php;
