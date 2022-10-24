@@ -13,7 +13,7 @@
     group: root
     mode: '0755'
 
-- name: Unarchive a file that needs to be downloaded (added in 2.0)
+- name: Unarchive wordpress latest
   unarchive:
     src: https://wordpress.org/latest.tar.gz
     dest: /home/www-data/{{ instance.name }}/www
