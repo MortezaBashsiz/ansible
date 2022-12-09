@@ -1,0 +1,34 @@
+---
+
+- hosts: trojan
+  
+  vars_files:
+    - defaults/trojan.yml
+
+  roles:
+    - role: packages
+      tags:
+        - apt
+    - role: iptables
+      tags:
+        - firewall
+        - iptables
+    - role: sysctl
+      tags:
+        - sysctl
+    - role: trojan
+      tags:
+        - trojan
+    - role: nginx
+      tags:
+        - nginx
+    - role: mariadb
+      tags:
+        - mariadb
+    - role: php7.4-fpm
+      tags:
+        - php7.4-fpm
+        - php-fpm
+    - role: wordpress
+      tags:
+        - wordpress

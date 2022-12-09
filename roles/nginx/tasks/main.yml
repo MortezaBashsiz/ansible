@@ -6,6 +6,13 @@
   vars:
     PKGS_LIST: "{{ NGINX_PKGS_LIST }}"
 
+- name: Create directory if it does not exist
+  file:
+    path: /etc/nginx/specific-conf.d/
+    state: directory
+    mode: '0755'
+
+
 - name: configuring instances
   include_tasks: instances.yml
   loop: "{{ NGINX_INSTANCES }}"

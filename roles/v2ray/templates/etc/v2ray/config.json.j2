@@ -1,9 +1,19 @@
 {
+  "log": {
+    "loglevel": "debug"
+  },
   "inbounds": [{
     "listen": "{{ instance.listen }}",
     "port": {{ instance.port }},
     "protocol": "{{ instance.protocol }}",
-    "streamSettings": {},
+    "streamSettings": {
+{% if instance.wsurl != "null" %}
+			"network": "ws",
+        "wsSettings": {
+        "path": "/{{ instance.wsurl }}"
+        }
+{% endif %}
+		},
     "settings": {
       "clients": [
 {% for client in instance.clients %}

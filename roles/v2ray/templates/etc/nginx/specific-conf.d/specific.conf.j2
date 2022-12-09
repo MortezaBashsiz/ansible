@@ -1,0 +1,13 @@
+{% set instances = V2RAY_INSTANCES %}
+{% for instance in instances %}
+location /{{ instance.wsurl }} {
+    proxy_redirect off;
+    proxy_pass          http://localhost:{{ instance.port }};
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $http_host;
+
+        }
+{% endfor %}
+

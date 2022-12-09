@@ -13,7 +13,9 @@
       tags:
         - firewall
         - iptables
+    - role: nginx
+      tags:
+        - nginx
     - role: v2ray
       tags:
         - v2ray
-  

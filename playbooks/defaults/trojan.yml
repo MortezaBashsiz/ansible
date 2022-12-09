@@ -1,0 +1,86 @@
+---
+
+TROJAN_PKGS_LIST:
+  - trojan
+  - nginx
+
+TROJAN_INSTANCES:
+  - name: trojan1
+    listen: "127.0.0.1"
+    port: 10801
+  - name: trojan2
+    listen: "127.0.0.1"
+    port: 10802
+  - name: trojan3
+    listen: "127.0.0.1"
+    port: 10803
+  - name: trojan4
+    listen: "127.0.0.1"
+    port: 10804
+  - name: trojan5
+    listen: "127.0.0.1"
+    port: 10805
+  - name: trojan6
+    listen: "127.0.0.1"
+    port: 10806
+  - name: trojan7
+    listen: "127.0.0.1"
+    port: 10807
+  - name: trojan8
+    listen: "127.0.0.1"
+    port: 10808
+  - name: trojan9
+    listen: "127.0.0.1"
+    port: 10809
+  - name: trojan10
+    listen: "127.0.0.1"
+    port: 10810
+
+INPUT_CHAINS:
+  - name: "INPUT_SSH"
+    policy: "ACCEPT"
+    rules:
+      - "-s 0.0.0.0/0 -p tcp --dport 22 -j ACCEPT"
+  - name: "INPUT_WEB"
+    policy: "ACCEPT"
+    rules:
+      - "-s 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT"
+      - "-s 0.0.0.0/0 -p tcp --dport 443 -j ACCEPT"
+
+OUTPUT_CHAINS:
+  - name: "OUTPUT_WEB"
+    policy: "ACCEPT"
+    rules:
+      - "-d 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT"
+      - "-d 0.0.0.0/0 -p tcp --dport 443 -j ACCEPT"
+  - name: "OUTPUT_SSH"
+    policy: "ACCEPT"
+    rules:
+      - "-d 0.0.0.0/0 -p tcp --dport 22 -j ACCEPT"
+
+FORWARD_CHAINS:
+  - name: "FORWARD_DEFAULT"
+    policy: "DROP"
+    rules:
+      - "-s 0.0.0.0/0 -d 0.0.0.0/0 -j DROP"
+
+NGINX_INSTANCES:
+  - domain: "{{ ansible_hostname }}.sudoer.net"
+    email: morteza.bashsiz@gmail.com
+    root: /home/www-data/{{ ansible_hostname }}.sudoer.net/www/wordpress
+
+DB_INSTANCES:
+  - name: sudoer_net
+
+DB_USERS:
+  - name: sudoer_user
+    priv:
+      - 'sudoer_net.*:ALL,GRANT'
+
+WP_INSTANCES:
+  - name: "{{ ansible_hostname }}.sudoer.net"
+    db: sudoer_net
+    db_user: sudoer_user
+    db_host: localhost 
+    db_charset: utf8
+

@@ -35,9 +35,12 @@
     systemctl restart "{{ instance.name }}"
   when: not config_file.stat.exists
 
+#echo {\"v\": \"2\", \"ps\": \"\", \"add\": \"htzhel01.sudoer.net\", \"port\": \"443\", \"id\": \"0847f1aa-6c02-5617-a75f-5b16a1fabd1a\", \"aid\": \"64\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"\", \"path\": \"/api01\", \"tls\": \"tls\"} | base64
+
 - name: generate vmess url
   shell: |
-    python3 /opt/v2ray_toolbox/conf2vmess.py -c /etc/v2ray/{{ instance.name }}.json -s {{ ansible_default_ipv4.address }} -p {{ instance.port }} -o /opt/v2ray_toolbox/{{ instance.name }}-vmess.json
+    python3 /opt/v2ray_toolbox/conf2vmess.py -c /etc/v2ray/{{ instance.name }}.json -s {{ instance.domain }} -p 443 -o /opt/v2ray_toolbox/{{ instance.name }}-vmess.json
+    sed 's/\"tls\": \"none\"/\"tls\": \"tls\"/g' /opt/v2ray_toolbox/{{ instance.name }}-vmess.json
     python3 /opt/v2ray_toolbox/vmess2sub.py /opt/v2ray_toolbox/{{ instance.name }}-vmess.json /opt/v2ray_toolbox/{{ instance.name }}-vmess_v2rayN.html -l /opt/v2ray_toolbox/{{ instance.name }}-vmess_v2rayN.lnk
   changed_when: false
 

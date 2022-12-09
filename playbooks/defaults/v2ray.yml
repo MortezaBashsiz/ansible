@@ -5,35 +5,54 @@ V2RAY_PKGS_LIST:
   - v2ray
 
 V2RAY_INSTANCES:
-  - name: v2ray1
-    listen: 0.0.0.0
-    port: 11081
-    protocol: vmess
+  - name: v2ray01
+    listen: "127.0.0.1"
+    port: 10801
+    protocol: "vmess"
+    wsurl: "api01"
+    domain: "{{ ansible_hostname }}.sudoer.net"
     clients:
       - level: 1
         alterId: 64  
-      - level: 1
-        alterId: 64  
-  - name: v2ray2
-    listen: 0.0.0.0
-    port: 11082
-    protocol: vmess
-    clients:
-      - level: 1
-        alterId: 64  
-      - level: 1
-        alterId: 64  
+#  - name: v2ray02
+#    listen: "127.0.0.1"
+#    port: 10802
+#    protocol: "vmess"
+#    wsurl: "api02"
+#    domain: "{{ ansible_hostname }}.sudoer.net"
+#    clients:
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
+#      - level: 1
+#        alterId: 64  
 
 INPUT_CHAINS:
   - name: "INPUT_SSH"
     policy: "ACCEPT"
     rules:
       - "-s 0.0.0.0/0 -p tcp --dport 22 -j ACCEPT"
-  - name: "INPUT_SHADOWSOCKS"
+      - "-s 0.0.0.0/0 -p tcp --dport 11082 -j ACCEPT"
+  - name: "INPUT_WEB"
     policy: "ACCEPT"
     rules:
-      - "-s 0.0.0.0/0 -p tcp --dport 11081 -j ACCEPT"
-      - "-s 0.0.0.0/0 -p tcp --dport 11082 -j ACCEPT"
+      - "-s 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT"
+      - "-s 0.0.0.0/0 -p tcp --dport 443 -j ACCEPT"
 
 OUTPUT_CHAINS:
   - name: "OUTPUT_WEB"
@@ -52,3 +71,7 @@ FORWARD_CHAINS:
     rules:
       - "-s 0.0.0.0/0 -d 0.0.0.0/0 -j DROP"
 
+NGINX_INSTANCES:
+  - domain: "{{ ansible_hostname }}.sudoer.net"
+    email: morteza.bashsiz@gmail.com
+    root: /usr/share/nginx/html
