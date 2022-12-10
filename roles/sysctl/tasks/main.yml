@@ -8,3 +8,6 @@
     group: root
     mode: '0644'
 
+- name: apply sysctl
+  shell: |
+    sysctl -p /etc/sysctl.d/99-sysctl.conf

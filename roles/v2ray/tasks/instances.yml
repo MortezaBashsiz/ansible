@@ -39,8 +39,8 @@
 
 - name: generate vmess url
   shell: |
-    python3 /opt/v2ray_toolbox/conf2vmess.py -c /etc/v2ray/{{ instance.name }}.json -s {{ instance.domain }} -p 443 -o /opt/v2ray_toolbox/{{ instance.name }}-vmess.json
-    sed 's/\"tls\": \"none\"/\"tls\": \"tls\"/g' /opt/v2ray_toolbox/{{ instance.name }}-vmess.json
+    python3 /opt/v2ray_toolbox/conf2vmess.py -c /etc/v2ray/{{ instance.name }}.json -s schere{{ instance.domain }} -p 443 -o /opt/v2ray_toolbox/{{ instance.name }}-vmess.json
+    sed -i 's/\"tls\": \"none\"/\"tls\": \"tls\"/g' /opt/v2ray_toolbox/{{ instance.name }}-vmess.json
     python3 /opt/v2ray_toolbox/vmess2sub.py /opt/v2ray_toolbox/{{ instance.name }}-vmess.json /opt/v2ray_toolbox/{{ instance.name }}-vmess_v2rayN.html -l /opt/v2ray_toolbox/{{ instance.name }}-vmess_v2rayN.lnk
   changed_when: false
 

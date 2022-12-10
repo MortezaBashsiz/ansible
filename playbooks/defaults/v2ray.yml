@@ -14,40 +14,1073 @@ V2RAY_INSTANCES:
     clients:
       - level: 1
         alterId: 64  
-#  - name: v2ray02
-#    listen: "127.0.0.1"
-#    port: 10802
-#    protocol: "vmess"
-#    wsurl: "api02"
-#    domain: "{{ ansible_hostname }}.sudoer.net"
-#    clients:
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
-#      - level: 1
-#        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray02
+    listen: "127.0.0.1"
+    port: 10802
+    protocol: "vmess"
+    wsurl: "api02"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray03
+    listen: "127.0.0.1"
+    port: 10803
+    protocol: "vmess"
+    wsurl: "api03"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray04
+    listen: "127.0.0.1"
+    port: 10804
+    protocol: "vmess"
+    wsurl: "api04"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray05
+    listen: "127.0.0.1"
+    port: 10805
+    protocol: "vmess"
+    wsurl: "api05"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray06
+    listen: "127.0.0.1"
+    port: 10806
+    protocol: "vmess"
+    wsurl: "api06"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray07
+    listen: "127.0.0.1"
+    port: 10807
+    protocol: "vmess"
+    wsurl: "api07"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray08
+    listen: "127.0.0.1"
+    port: 10808
+    protocol: "vmess"
+    wsurl: "api08"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray09
+    listen: "127.0.0.1"
+    port: 10809
+    protocol: "vmess"
+    wsurl: "api09"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+  - name: v2ray10
+    listen: "127.0.0.1"
+    port: 10810
+    protocol: "vmess"
+    wsurl: "api10"
+    domain: "{{ ansible_hostname }}.sudoer.net"
+    clients:
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
+      - level: 1
+        alterId: 64  
 
 INPUT_CHAINS:
   - name: "INPUT_SSH"
     policy: "ACCEPT"
     rules:
       - "-s 0.0.0.0/0 -p tcp --dport 22 -j ACCEPT"
-      - "-s 0.0.0.0/0 -p tcp --dport 11082 -j ACCEPT"
   - name: "INPUT_WEB"
     policy: "ACCEPT"
     rules:
@@ -75,3 +1108,32 @@ NGINX_INSTANCES:
   - domain: "{{ ansible_hostname }}.sudoer.net"
     email: morteza.bashsiz@gmail.com
     root: /usr/share/nginx/html
+
+SYSCTL_PARAMETERS:
+  - name: "net.ipv4.ip_forward"
+    value: "0"
+  - name: "kernel.randomize_va_space" 	
+    value: "0"
+  - name: "net.core.netdev_max_backlog" 	
+    value: "25000"
+  - name: "net.core.rmem_max" 	
+    value: "4136960"
+  - name: "net.core.wmem_max"
+    value: "4136960"
+  - name: "net.ipv4.tcp_congestion_control" 	
+    value: "cubic"
+  - name: "net.ipv4.tcp_fin_timeout" 	
+    value: "1"
+  - name: "net.ipv4.tcp_limit_output_bytes" 	
+    value: "131072"
+  - name: "net.ipv4.tcp_low_latency" 	
+    value: "0"
+  - name: "net.ipv4.tcp_max_tw_buckets" 	
+    value: "450000"
+  - name: "net.ipv4.tcp_rmem"
+    value: "4096 87380 4136960"
+  - name: "net.ipv4.tcp_tw_reuse"
+    value: "1"
+  - name: "net.ipv4.tcp_wmem"
+    value: "4096 16384 4136960"
+

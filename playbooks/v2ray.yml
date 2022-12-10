@@ -9,6 +9,9 @@
     - role: packages
       tags:
         - apt
+    - role: sysctl
+      tags:
+        - sysctl
     - role: iptables
       tags:
         - firewall
