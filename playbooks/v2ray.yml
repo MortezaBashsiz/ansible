@@ -9,11 +9,16 @@
     - role: packages
       tags:
         - apt
+    - role: sysctl
+      tags:
+        - sysctl
     - role: iptables
       tags:
         - firewall
         - iptables
+    - role: nginx
+      tags:
+        - nginx
     - role: v2ray
       tags:
         - v2ray
-  

@@ -24,6 +24,20 @@
     - sub2srlink.py  
     - vmess2sub.py
 
+- name: nginx config for v2ray
+  template:
+    src: etc/nginx/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: configuring nginx instances
+  include_tasks: nginx.yml
+  loop: "{{ NGINX_INSTANCES }}"
+  loop_control:
+    loop_var: instance
+
 - name: configuring instances
   include_tasks: instances.yml
   loop: "{{ V2RAY_INSTANCES }}"

@@ -1,0 +1,37 @@
+---
+
+- name: check if config file exists {{ instance.name }}
+  stat:
+    path: /etc/trojan/{{ instance.name }}.json
+  register: config_file
+
+- name: check if service file exists {{ instance.name }}
+  stat:
+    path: /lib/systemd/system/{{ instance.name }}.service
+  register: service_file
+
+- name: trojan service {{ instance.name }}
+  template:
+    src: lib/systemd/system/trojan.service.j2
+    dest: /lib/systemd/system/{{ instance.name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  when: not service_file.stat.exists
+
+- name: trojan config {{ instance.name }}
+  template:
+    src: etc/trojan/config.json.j2
+    dest: /etc/trojan/{{ instance.name }}.json
+    owner: root
+    group: root
+    mode: '0644'
+  when: not config_file.stat.exists
+
+- name: restart service
+  shell: |
+    systemctl daemon-realod
+    systemctl enable "{{ instance.name }}"
+    systemctl restart "{{ instance.name }}"
+  when: not config_file.stat.exists
+

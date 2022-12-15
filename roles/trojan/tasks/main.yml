@@ -1,0 +1,25 @@
+---
+
+- name: Install the latest version packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop:
+    - "{{ PKGS_LIST }}"
+
+- name: Update all packages
+  apt:
+    name: "*"
+    state: latest
+
+- name: Create simple self-signed certificate
+  shell: |
+    openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.sudoer.online" -keyout /etc/trojan/ssl.key  -out /etc/trojan/ssl.cert
+
+- name: configuring instances
+  include_tasks: instances.yml
+  loop: "{{ TROJAN_INSTANCES }}"
+  loop_control:
+    loop_var: instance
+

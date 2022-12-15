@@ -5,17 +5,19 @@ V2RAY_PKGS_LIST:
   - v2ray
 
 V2RAY_INSTANCES:
-  - name: v2ray1
-    listen: "0.0.0.0"
-    port: 10081
+  - name: v2ray01
+    listen: "127.0.0.1"
+    port: 10801
     protocol: "vmess"
+    wsurl: "/api01"
     clients:
       - level: 1
         alterId: 64  
-  - name: v2ray2
-    listen: "0.0.0.0"
-    port: 10082
+  - name: v2ray02
+    listen: "127.0.0.1"
+    port: 10802
     protocol: "vmess"
+    wsurl: "/api02"
     clients:
       - level: 1
         alterId: 64  

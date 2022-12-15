@@ -1,0 +1,38 @@
+---
+
+PKGS_LIST:
+  - trojan
+  - nginx
+
+TROJAN_INSTANCES:
+  - name: trojan1
+    listen: "127.0.0.1"
+    port: 10801
+  - name: trojan2
+    listen: "127.0.0.1"
+    port: 10802
+  - name: trojan3
+    listen: "127.0.0.1"
+    port: 10803
+  - name: trojan4
+    listen: "127.0.0.1"
+    port: 10804
+  - name: trojan5
+    listen: "127.0.0.1"
+    port: 10805
+  - name: trojan6
+    listen: "127.0.0.1"
+    port: 10806
+  - name: trojan7
+    listen: "127.0.0.1"
+    port: 10807
+  - name: trojan8
+    listen: "127.0.0.1"
+    port: 10808
+  - name: trojan9
+    listen: "127.0.0.1"
+    port: 10809
+  - name: trojan10
+    listen: "127.0.0.1"
+    port: 10810
+
