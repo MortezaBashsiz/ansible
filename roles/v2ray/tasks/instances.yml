@@ -17,7 +17,7 @@
     owner: root
     group: root
     mode: '0644'
-  when: not service_file.stat.exists
+#  when: not service_file.stat.exists
 
 - name: v2ray config {{ instance.name }}
   template:
@@ -26,14 +26,14 @@
     owner: root
     group: root
     mode: '0644'
-  when: not config_file.stat.exists
+#  when: not config_file.stat.exists
 
 - name: restart service
   shell: |
     systemctl daemon-realod
     systemctl enable "{{ instance.name }}"
     systemctl restart "{{ instance.name }}"
-  when: not config_file.stat.exists
+#  when: not config_file.stat.exists
 
 - name: generate vmess url
   shell: |
