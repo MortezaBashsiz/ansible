@@ -35,31 +35,3 @@
     systemctl restart "{{ instance.name }}"
 #  when: not config_file.stat.exists
 
-- name: generate vmess url
-  shell: |
-    python3 /opt/v2ray_toolbox/conf2vmess.py -c /etc/v2ray/{{ instance.name }}.json -s schere{{ instance.domain }} -p 443 -o /opt/v2ray_toolbox/{{ instance.name }}-schere-vmess.json
-    python3 /opt/v2ray_toolbox/conf2vmess.py -c /etc/v2ray/{{ instance.name }}.json -s gheychi{{ instance.domain }} -p 443 -o /opt/v2ray_toolbox/{{ instance.name }}-gheychi-vmess.json
-    sed -i 's/\"tls\": \"none\"/\"tls\": \"tls\"/g' /opt/v2ray_toolbox/{{ instance.name }}-schere-vmess.json
-    sed -i 's/\"tls\": \"none\"/\"tls\": \"tls\"/g' /opt/v2ray_toolbox/{{ instance.name }}-gheychi-vmess.json
-    python3 /opt/v2ray_toolbox/vmess2sub.py /opt/v2ray_toolbox/{{ instance.name }}-schere-vmess.json /opt/v2ray_toolbox/{{ instance.name }}-schere-vmess_v2rayN.html -l /opt/v2ray_toolbox/{{ instance.name }}-schere-vmess_v2rayN.lnk
-    python3 /opt/v2ray_toolbox/vmess2sub.py /opt/v2ray_toolbox/{{ instance.name }}-gheychi-vmess.json /opt/v2ray_toolbox/{{ instance.name }}-gheychi-vmess_v2rayN.html -l /opt/v2ray_toolbox/{{ instance.name }}-gheychi-vmess_v2rayN.lnk
-  changed_when: false
-
-- name: register output schere
-  slurp:
-    src: /opt/v2ray_toolbox/{{ instance.name }}-schere-vmess_v2rayN.lnk
-  register: vmess_url_schere
-
-- name: register output gheychi
-  slurp:
-    src: /opt/v2ray_toolbox/{{ instance.name }}-gheychi-vmess_v2rayN.lnk
-  register: vmess_url_gheychi
-
-- name: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA vmess url schere AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-  debug:
-    msg: "{{ vmess_url_schere.content | b64decode }}"
-
-- name: BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB vmess url gheychi BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-  debug:
-    msg: "{{ vmess_url_gheychi.content | b64decode }}"
-
