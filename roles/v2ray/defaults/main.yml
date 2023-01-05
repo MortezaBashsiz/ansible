@@ -4,6 +4,9 @@ V2RAY_PKGS_LIST:
   - python3-urllib3
   - v2ray
 
+V2RAY_CFG_DOMAIN: "adas"
+V2RAY_CFG_PREDOMAIN: "nokhod"
+
 V2RAY_INSTANCES:
   - name: v2ray01
     listen: "127.0.0.1"
