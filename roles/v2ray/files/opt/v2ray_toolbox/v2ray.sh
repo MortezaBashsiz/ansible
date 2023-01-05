@@ -19,6 +19,9 @@
 
 set -o nounset                                  # Treat unset variables as an error
 
+domain="$1"
+preDomain="$2"
+mainDomain="$3"
 mkdir -p /opt/v2ray_urls
 
 # shellcheck disable=SC2044
@@ -27,7 +30,7 @@ do
 	date=$(date '+%Y%m%d')
 	endPoint=$(jq .inbounds < "$file" | jq .[].streamSettings.wsSettings.path)
 	uuidList=$(jq .inbounds < "$file" | jq .[].settings.clients | jq .[].id)
-	hostName=$(hostname -f)
+	hostName=$(hostname)
   # shellcheck disable=SC2001
 	apiName=$(echo "$endPoint" | sed 's/\"//g')
 	rm -fr /opt/v2ray_urls/"$apiName"
@@ -38,17 +41,17 @@ do
 		name=$(echo "$uuId" | sed 's/\"//g')
 		jsonClient_1=$(cat << EOF
 {
-"add":"66.235.200.136", 
+"add":"$domain", 
 "aid":"64", 
 "alpn":"", 
-"host":"schere$hostName", 
+"host":"$preDomain$hostName.$mainDomain", 
 "id":$uuId, 
 "net":"ws", 
 "path":$endPoint, 
 "port":"443", 
-"ps":"sudoer", 
+"ps":"Sudoer_VPN_bot", 
 "scy":"auto", 
-"sni":"schere$hostName", 
+"sni":"$preDomain$hostName.$mainDomain", 
 "tls":"tls", 
 "type":"", 
 "v":"2" 
@@ -56,31 +59,7 @@ do
 EOF
 )
 		encoded=$(echo "$jsonClient_1" | base64 -w 0)
-		echo "vmess://$encoded" > /opt/v2ray_urls/"$apiName"/"1_""$date"_"$name"".url"
-
-		jsonClient_2=$(cat << EOF
-{
-"add":"23.227.38.97", 
-"aid":"64", 
-"alpn":"", 
-"host":"schere$hostName", 
-"id":$uuId, 
-"net":"ws", 
-"path":$endPoint, 
-"port":"443", 
-"ps":"sudoer", 
-"scy":"auto", 
-"sni":"schere$hostName", 
-"tls":"tls", 
-"type":"", 
-"v":"2" 
-}
-EOF
-)
-
-		encoded=$(echo "$jsonClient_2" | base64 -w 0)
-		echo "vmess://$encoded" > /opt/v2ray_urls/"$apiName"/"2_""$date"_"$name"".url"
-
+		echo "vmess://$encoded" > /opt/v2ray_urls/"$apiName"/"$date"_"$name"".url"
 	done
 done
 
