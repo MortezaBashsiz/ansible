@@ -22,6 +22,7 @@ set -o nounset                                  # Treat unset variables as an er
 domain="$1"
 preDomain="$2"
 mainDomain="$3"
+configName="$4"
 mkdir -p /opt/v2ray_urls
 
 # shellcheck disable=SC2044
@@ -49,7 +50,7 @@ do
 "net":"ws", 
 "path":$endPoint, 
 "port":"443", 
-"ps":"Sudoer_VPN_bot", 
+"ps":"$configName", 
 "scy":"auto", 
 "sni":"$preDomain$hostName.$mainDomain", 
 "tls":"tls", 

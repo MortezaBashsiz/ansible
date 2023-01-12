@@ -43,5 +43,5 @@
 
 - name: generate vmess url
   shell: |
-    bash /opt/v2ray_toolbox/v2ray.sh "{{ V2RAY_CFG_DOMAIN }}" "{{ V2RAY_CFG_PREDOMAIN }}" "{{ MAIN_DOMAIN }}"
+    bash /opt/v2ray_toolbox/v2ray.sh "{{ V2RAY_CFG_DOMAIN }}" "{{ V2RAY_CFG_PREDOMAIN }}" "{{ MAIN_DOMAIN }}" "{{ V2RAY_CFG_NAME }}"
   changed_when: false
