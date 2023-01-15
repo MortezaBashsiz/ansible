@@ -26,12 +26,13 @@ configName="$4"
 mkdir -p /opt/v2ray_urls
 
 # shellcheck disable=SC2044
-for file in $(find /etc/v2ray/ -type f -iname "v2ray[0-9][0-9].json");
+for file in $(find /etc/v2ray/ -type f -iname "v2ray[0-9][0-9]$configName.json");
 do
 	date=$(date '+%Y%m%d')
 	endPoint=$(jq .inbounds < "$file" | jq .[].streamSettings.wsSettings.path)
 	uuidList=$(jq .inbounds < "$file" | jq .[].settings.clients | jq .[].id)
 	hostName=$(hostname)
+	sni="$preDomain$hostName.$mainDomain"
   # shellcheck disable=SC2001
 	apiName=$(echo "$endPoint" | sed 's/\"//g')
 	rm -fr /opt/v2ray_urls/"$apiName"
@@ -40,25 +41,50 @@ do
 	do	
 		# shellcheck disable=SC2001
 		name=$(echo "$uuId" | sed 's/\"//g')
-		jsonClient_1=$(cat << EOF
+		if [[ "$preDomain" == "schere" ]]
+		then
+			jsonClient_1=$(cat << EOF
 {
 "add":"$domain", 
 "aid":"64", 
 "alpn":"", 
-"host":"$preDomain$hostName.$mainDomain", 
+"host":"$sni", 
 "id":$uuId, 
 "net":"ws", 
 "path":$endPoint, 
 "port":"443", 
 "ps":"$configName", 
 "scy":"auto", 
-"sni":"$preDomain$hostName.$mainDomain", 
+"sni":"$sni", 
 "tls":"tls", 
 "type":"", 
 "v":"2" 
 }
 EOF
 )
+	fi
+	if [[ "$preDomain" == "gheychi" ]]
+		then
+			jsonClient_1=$(cat << EOF
+{
+"add":"$sni", 
+"aid":"64", 
+"alpn":"", 
+"host":"$sni", 
+"id":$uuId, 
+"net":"ws", 
+"path":$endPoint, 
+"port":"443", 
+"ps":"$configName", 
+"scy":"auto", 
+"sni":"$sni", 
+"tls":"tls", 
+"type":"", 
+"v":"2" 
+}
+EOF
+)
+	fi
 		encoded=$(echo "$jsonClient_1" | base64 -w 0)
 		echo "vmess://$encoded" > /opt/v2ray_urls/"$apiName"/"$date"_"$name"".url"
 	done
