@@ -32,7 +32,7 @@ do
 	endPoint=$(jq .inbounds < "$file" | jq .[].streamSettings.wsSettings.path)
 	uuidList=$(jq .inbounds < "$file" | jq .[].settings.clients | jq .[].id)
 	hostName=$(hostname)
-	uuidSni=$(uuidgen)
+	uuidSni=$(uuid)
 	host="$preDomain$hostName.$mainDomain"
 	sni="$uuidSni.$mainDomain"
   # shellcheck disable=SC2001
