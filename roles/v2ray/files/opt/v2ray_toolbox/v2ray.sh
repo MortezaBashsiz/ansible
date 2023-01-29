@@ -32,7 +32,9 @@ do
 	endPoint=$(jq .inbounds < "$file" | jq .[].streamSettings.wsSettings.path)
 	uuidList=$(jq .inbounds < "$file" | jq .[].settings.clients | jq .[].id)
 	hostName=$(hostname)
-	sni="$preDomain$hostName.$mainDomain"
+	uuidSni=$(uuid)
+	host="$preDomain$hostName.$mainDomain"
+	sni="$uuidSni.$mainDomain"
   # shellcheck disable=SC2001
 	apiName=$(echo "$endPoint" | sed 's/\"//g')
 	rm -fr /opt/v2ray_urls/"$apiName"
@@ -46,9 +48,9 @@ do
 			jsonClient_1=$(cat << EOF
 {
 "add":"$domain", 
-"aid":"64", 
+"aid":"0", 
 "alpn":"", 
-"host":"$sni", 
+"host":"$host", 
 "id":$uuId, 
 "net":"ws", 
 "path":$endPoint, 
@@ -67,10 +69,10 @@ EOF
 		then
 			jsonClient_1=$(cat << EOF
 {
-"add":"$sni", 
-"aid":"64", 
+"add":"$host", 
+"aid":"0", 
 "alpn":"", 
-"host":"$sni", 
+"host":"$host", 
 "id":$uuId, 
 "net":"ws", 
 "path":$endPoint, 
