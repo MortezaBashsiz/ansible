@@ -5,3 +5,4 @@
     name: nginx
     state: reloaded
     enabled: yes
+    daemon_reload: true

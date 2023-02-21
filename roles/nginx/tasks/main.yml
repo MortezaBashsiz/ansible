@@ -8,10 +8,22 @@
 
 - name: Create directory if it does not exist
   file:
-    path: /etc/nginx/specific-conf.d/
+    path: "{{ item }}"
     state: directory
     mode: '0755'
+  with_items:
+    - /etc/nginx/specific-conf.d/
+    - /etc/systemd/system/nginx.service.d/
 
+- name: nginx config for {{ instance.domain }}
+  template:
+    src: etc/systemd/system/nginx.service.d/override.conf.j2
+    dest: /etc/systemd/system/nginx.service.d/override.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    reload daemon
 
 - name: configuring instances
   include_tasks: instances.yml
