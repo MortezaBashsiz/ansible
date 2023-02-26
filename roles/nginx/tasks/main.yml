@@ -22,8 +22,6 @@
     owner: root
     group: root
     mode: '0644'
-  notify:
-    reload daemon
 
 - name: configuring instances
   include_tasks: instances.yml
