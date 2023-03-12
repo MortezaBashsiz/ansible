@@ -1,0 +1,158 @@
+---
+- name: packages role
+  include_role:
+    name: packages
+  vars:
+    PKGS_LIST: "{{ WARP_PKGS_LIST }}"
+
+- name: Ensure /etc/wireguard directory exists
+  ansible.builtin.file:
+    path: /etc/wireguard
+    state: directory
+    mode: "0755"
+
+- name: Get latest wgcf release from GitHub API
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/ViRb3/wgcf/releases/latest
+    return_content: yes
+  register: wgcf_latest_release
+
+- name: Extract wgcf download url
+  ansible.builtin.set_fact:
+    wgcf_download_url: "{{ wgcf_latest_release.content | from_json | json_query(query) | first }}"
+  vars:
+    query: "assets[?contains(name,'linux_amd64')].browser_download_url"
+
+- name: Download and install latest wgcf release
+  ansible.builtin.get_url:
+    url: "{{ wgcf_download_url }}"
+    dest: /usr/bin/wgcf
+    mode: "a+x"
+    force: true
+
+- name: Register with WARP
+  command:
+    cmd: "/usr/bin/wgcf register --accept-tos"
+    chdir: "/etc/wireguard"
+    creates: "{{ wgcf_account }}"
+
+- name: Generate Wireguard config
+  command:
+    cmd: "/usr/bin/wgcf generate"
+    chdir: "/etc/wireguard"
+    creates: "{{ wgcf_profile }}"
+
+- name: stat Wireguard config {{ wireguard_config }}
+  stat:
+    path: "{{ wireguard_config }}"
+  register: wg_config_file
+
+- name: Copy generated config to /etc/wireguard
+  copy:
+    src: /etc/wireguard/{{ wgcf_profile }}
+    dest: "{{ wireguard_config }}"
+    remote_src: yes
+    mode: "0644"
+  when: not wg_config_file.stat.exists
+
+- name: Update Wireguard configuration - Set DNS & MTU
+  lineinfile:
+    path: "{{ wireguard_config }}"
+    regexp: "{{ item.regex }}"
+    line: "{{ item.line }}"
+  with_items:
+    - regex: "^DNS"
+      line: "#DNS = 1.1.1.1"
+    - regex: "^MTU"
+      line: "MTU = 1420"
+
+- name: Update Wireguard configuratoin - Delete defualt AllowedIPs
+  lineinfile:
+    path: "{{ wireguard_config }}"
+    state: absent
+    regexp: '^AllowedIPs = (0\.0\.0\.0|\:\:\/0)'
+
+- name: Make sure WARP is not running before fetching IPs
+  ansible.builtin.systemd:
+    state: stopped
+    name: "wg-quick@wg0"
+
+- name: Fetch Google and AWS Cloudfront IPs
+  ansible.builtin.shell: |
+    GOOGLE_CIDRS=$(curl -s https://www.gstatic.com/ipranges/goog.json | jq -r '.prefixes[]  | {ipv4Prefix,ipv6Prefix} | join("")' | sed ':a;N;$!ba;s/\n/,/g')
+    CLOUDFRONT_CIDRS=$(curl -s https://ip-ranges.amazonaws.com/ip-ranges.json | jq -r '.prefixes[] | select(.service | match("CLOUDFRONT")) | {ip_prefix} | join(",") ' | sed ':a;N;$!ba;s/\n/,/g')
+    CLOUDFLARE_CIDRS=$(curl -s https://www.cloudflare.com/ips-v4 https://www.cloudflare.com/ips-v6 | grep -v 162.158.0.0 | sed ':a;N;$!ba;s/\n/,/g')
+    cat <<-EOF
+    PersistentKeepalive = 5
+
+    # Google
+    AllowedIPS = ${GOOGLE_CIDRS}
+
+    # AWS CloudFront
+    AllowedIPS = ${CLOUDFRONT_CIDRS}
+
+    # CLOUDFLARE (COMMENTED BY DEFAULT)
+    #AllowedIPS = ${CLOUDFLARE_CIDRS}
+    EOF
+  register: allowedips
+
+- name: Update Wireguard configuration - Add Google and AWS Cloudfront AllowedIPS
+  ansible.builtin.blockinfile:
+    path: "{{ wireguard_config }}"
+    block: "{{ allowedips.stdout }}"
+
+- name: Start and Enable WARP (IPv4-IPv6)
+  ansible.builtin.systemd:
+    name: "wg-quick@wg0"
+    state: restarted
+    enabled: true
+
+- name: Ensure WARP has been activated successfully (IPv4-IPv6)
+  uri:
+    url: https://ipinfo.io
+    timeout: 5
+    http_agent: curl
+    return_content: yes
+  register: ipinfo_ipv4ipv6_result
+  # failed_when: true
+  failed_when: "'cloudflare' not in ipinfo_ipv4ipv6_result.content|lower"
+  ignore_errors: true
+
+- name: Update Wireguard configuratoin (IPv4-only)
+  lineinfile:
+    path: "{{ wireguard_config }}"
+    state: absent
+    regexp: '^Address = .*\/128$'
+  when: ipinfo_ipv4ipv6_result.failed
+
+- name: Update Wireguard configuratoin - Delete IPv6 AllowdIPS (IPv4-only)
+  ansible.builtin.replace:
+    path: "{{ wireguard_config }}"
+    regexp: ',([a-fA-F0-9]{0,4}:){1,7}([a-fA-F0-9]{1,4})?\/[0-9]{1,3}'
+    replace: ""
+  when: ipinfo_ipv4ipv6_result.failed
+
+- name: Start and Enable WARP (IPv4-only)
+  ansible.builtin.systemd:
+    name: "wg-quick@wg0"
+    state: restarted
+    enabled: true
+  when: ipinfo_ipv4ipv6_result.failed
+
+- name: Ensure WARP has been activated successfully (IPv4-only)
+  uri:
+    url: https://ipinfo.io
+    timeout: 5
+    http_agent: curl
+    return_content: yes
+  register: ipinfo_ipv4_result
+  failed_when: "'cloudflare' not in ipinfo_ipv4_result.content|lower"
+  ignore_errors: true
+  when: ipinfo_ipv4ipv6_result.failed
+
+- name: Stop and Disable WARP if both IPv4-only and IPv4-IPv6 checks failed
+  ansible.builtin.systemd:
+    state: stopped
+    name: "wg-quick@wg0"
+    enabled: false
+  when: ipinfo_ipv4ipv6_result.failed and ipinfo_ipv4_result.failed

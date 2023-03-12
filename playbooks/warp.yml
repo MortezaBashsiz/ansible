@@ -1,0 +1,9 @@
+---
+
+- hosts: warp
+  
+  vars_files:
+    - defaults/warp.yml
+
+  roles:
+    - role: warp

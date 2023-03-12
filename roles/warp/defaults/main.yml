@@ -1,0 +1,10 @@
+---
+WARP_PKGS_LIST:
+  - wireguard
+  - iptables
+  - resolvconf
+  - jq
+
+wgcf_account: wgcf-account.toml
+wgcf_profile: wgcf-profile.conf
+wireguard_config: /etc/wireguard/wg0.conf
