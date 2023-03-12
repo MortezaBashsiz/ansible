@@ -52,7 +52,7 @@
     src: /etc/wireguard/{{ wgcf_profile }}
     dest: "{{ wireguard_config }}"
     remote_src: yes
-    mode: "0644"
+    mode: "0600"
   when: not wg_config_file.stat.exists
 
 - name: Update Wireguard configuration - Set DNS & MTU
