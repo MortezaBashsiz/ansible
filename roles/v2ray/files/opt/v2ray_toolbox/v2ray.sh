@@ -26,7 +26,7 @@ configName="$4"
 mkdir -p /opt/v2ray_urls
 
 # shellcheck disable=SC2044
-for file in $(find /etc/v2ray/ -type f -iname "v2ray[0-9][0-9]$configName.json");
+for file in $(find /etc/v2ray/ -type f -iname "v2ray[0-9][0-9]*$configName.json");
 do
 	date=$(date '+%Y%m%d')
 	endPoint=$(jq .inbounds < "$file" | jq .[].streamSettings.wsSettings.path)

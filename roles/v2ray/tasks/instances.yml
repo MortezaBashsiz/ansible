@@ -22,7 +22,7 @@
 - name: v2ray config {{ instance.name }}
   template:
     src: etc/v2ray/config.json.j2
-    dest: /etc/v2ray/{{ instance.name }}.json
+    dest: /etc/v2ray/{{ instance.name }}_{{ V2RAY_CFG_NAME }}.json
     owner: root
     group: root
     mode: '0644'
