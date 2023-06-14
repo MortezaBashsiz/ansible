@@ -22,7 +22,8 @@ set -o nounset                                  # Treat unset variables as an er
 domain="$1"
 preDomain="$2"
 mainDomain="$3"
-configName="$4"
+#configName="$4"
+configName=""
 mkdir -p /opt/v2ray_urls
 
 # shellcheck disable=SC2044
