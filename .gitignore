@@ -1,2 +1,1 @@
-inventory.yml
-playbooks/
+*.yml.un~

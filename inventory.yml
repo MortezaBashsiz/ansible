@@ -1,0 +1,21 @@
+---
+
+init_hosts:
+  hosts:
+    host1:
+    host2:
+
+v2ray:
+  hosts:
+    192.168.56.151:
+
+shadowsocks:
+  hosts:
+    example1:
+
+web_databases:
+  hosts:
+    db1.demo.local:
+    db2.demo.local:
+      ansible_user: user
+      ansible_port: 22
