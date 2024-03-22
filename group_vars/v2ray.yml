@@ -1,0 +1,2 @@
+ansible_user: user
+ansible_port: 22
