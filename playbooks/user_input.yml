@@ -1,0 +1,19 @@
+# user_input.yml
+vars_prompt:
+  - name: MAIN_DOMAIN
+    prompt: "Enter the main domain for the environment"
+    private: false
+    failed_when: "MAIN_DOMAIN is undefined or empty"
+    retry_until: MAIN_DOMAIN is defined and MAIN_DOMAIN | trim != ''
+
+  - name: V2RAY_CFG_DOMAIN
+    prompt: "Enter the domain for V2Ray configuration"
+    private: false
+    failed_when: "V2RAY_CFG_DOMAIN is undefined or empty"
+    retry_until: V2RAY_CFG_DOMAIN is defined and V2RAY_CFG_DOMAIN | trim != ''
+
+  - name: V2RAY_CFG_PREDOMAIN
+    prompt: "Enter the pre-domain for V2Ray configuration"
+    private: false
+    failed_when: "V2RAY_CFG_PREDOMAIN is undefined or empty"
+    retry_until: V2RAY_CFG_PREDOMAIN is defined and V2RAY_CFG_PREDOMAIN | trim != ''

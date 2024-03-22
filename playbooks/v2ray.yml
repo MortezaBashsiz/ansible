@@ -1,9 +1,41 @@
+# playbooks/v2ray.yml
+
 ---
 
 - hosts: v2ray
-  
-  vars_files:
-    - defaults/v2ray.yml
+
+
+  # TODO include user_input instead of using it directly in playbook
+  vars_prompt:
+    - name: MAIN_DOMAIN
+      prompt: "Enter the main domain for the environment"
+      private: false
+      # task_failed_when: "MAIN_DOMAIN is undefined or empty"
+      # retry_until: MAIN_DOMAIN is defined and MAIN_DOMAIN | trim != ''
+
+    - name: EMAIL
+      prompt: "Enter your email address"
+      private: false
+      # task_failed_when: "EMAIL is undefined or empty"
+      # retry_until: EMAIL is defined and EMAIL | trim != ''
+
+    - name: MAIN_DOMAIN
+      prompt: "Enter the main domain for the environment"
+      private: false
+      # failed_when: "MAIN_DOMAIN is undefined or empty"
+      # retry_until: MAIN_DOMAIN is defined and MAIN_DOMAIN | trim != ''
+
+    - name: V2RAY_CFG_DOMAIN
+      prompt: "Enter the domain for V2Ray configuration"
+      private: false
+      # failed_when: "V2RAY_CFG_DOMAIN is undefined or empty"
+      # retry_until: V2RAY_CFG_DOMAIN is defined and V2RAY_CFG_DOMAIN | trim != ''
+
+    - name: V2RAY_CFG_PREDOMAIN
+      prompt: "Enter the pre-domain for V2Ray configuration"
+      private: false
+      # failed_when: "V2RAY_CFG_PREDOMAIN is undefined or empty"
+      # retry_until: V2RAY_CFG_PREDOMAIN is defined and V2RAY_CFG_PREDOMAIN | trim != ''
 
   roles:
     - role: packages
