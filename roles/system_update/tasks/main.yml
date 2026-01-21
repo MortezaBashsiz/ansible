@@ -1,0 +1,12 @@
+---
+- name: Update and upgrade Debain-based systems
+  apt:
+    update_cache: yes
+    upgrade: dist
+  when: ansible_os_family == "Debian"
+
+- name: Update and upgrade RedHat-based systems
+  yum:
+    name: '*'
+    state: latest
+  when: ansible_os_family == "RedHat"

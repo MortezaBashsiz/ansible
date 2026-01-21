@@ -1,7 +1,5 @@
 ---
 
-MAIN_DOMAIN: "sudoer.net"
-
 V2RAY_PKGS_LIST:
   - python3-urllib3
   - v2ray
@@ -1108,7 +1106,7 @@ FORWARD_CHAINS:
 
 NGINX_INSTANCES:
   - domain: "{{ ansible_hostname }}.{{ MAIN_DOMAIN }}"
-    email: morteza.bashsiz@gmail.com
+    email: "{{ EMAIL }}"
     root: /usr/share/nginx/html
 
 SYSCTL_PARAMETERS:

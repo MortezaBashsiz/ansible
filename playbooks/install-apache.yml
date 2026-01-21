@@ -1,0 +1,25 @@
+---
+- hosts: test
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: Install Apache
+      apt: name={{ item }} state=present
+      with_items:
+        - apache2
+        - apache2-dev
+
+    - name: Copy configuration files.
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - { src: "apach2.conf", dest: "/etc/apache2/apache2.conf" }
+        - { src: "000-default.conf", dest: "/etc/apache2/sites-available/000-default.conf" }
+       
+    - name: Make sure Apache is started now and at boot.
+      service: name=apache2 state=started enabled=yes

@@ -1,0 +1,6 @@
+- name: docker installation and configuration
+  hosts: template
+  become: true
+  gather_facts: True
+  roles:
+    - docker_installation

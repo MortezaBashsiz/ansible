@@ -1,0 +1,12 @@
+---
+# Crate a virtual machine from a template
+
+DC_NAME: krm
+ESXI_NAME: 172.27.103.111
+
+VM_TEMPLATE: template-UbuS24-1
+VM_FOLDER: tala
+SUBNET_MASK: 255.255.255.0
+GATEWAY: 192.168.175.1
+DNS_SERVER1: 8.8.8.8
+DNS_SERVER2: 1.1.1.1

@@ -1,0 +1,55 @@
+---
+- name: Add a host to SSH configuration file
+  community.general.ssh_config:
+    user: "{{ lookup('env', 'USER') }}"
+    remote_user: hojat
+    host: "{{ inventory_hostname }}"
+    hostname: "{{ IPADDRESS }}"
+    port: "{{ ansible_port }}"
+    state: present
+    group: staff
+    strict_host_key_checking: no
+  delegate_to: localhost
+  tags:
+    - create_ssh_config
+
+- name: Install parted
+  ansible.builtin.package:
+    name: parted
+    state: present
+
+- name: Read device information /dev/sda
+  parted:
+    device: "/dev/sda"
+    unit: KiB
+  register: device_info
+
+- name: Create a new primary partition for LVM
+  parted:
+    device: "/dev/sda"
+    number: "4"
+    part_type: primary
+    flags: [ lvm ]
+    label: gpt
+    state: present
+    part_start: "{{ device_info.partitions[2].end + 1}}KiB"
+    part_end: "100%"
+
+- name: Resize a volume group on top of /dev/sda3 and /dev/sda5.
+  community.general.lvg:
+    vg: ubuntu-vg
+    pvs: /dev/sda3,/dev/sda4
+
+- name: Resize logical volume root
+  community.general.lvol:
+    vg: ubuntu-vg
+    lv: lv-root
+    size: +10%FREE
+    resizefs: true
+
+- name: Resize logical volume root
+  community.general.lvol:
+    vg: ubuntu-vg
+    lv: lv-var
+    size: +100%FREE
+    resizefs: true

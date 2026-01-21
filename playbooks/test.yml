@@ -1,0 +1,7 @@
+- name: Hardening
+  hosts: template
+  become: yes
+  tasks:
+    - name: Test ping
+      ping:
+

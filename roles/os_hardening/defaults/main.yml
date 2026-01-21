@@ -1,0 +1,515 @@
+---
+os_env_user_paths: [/usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin]
+os_env_extra_user_paths: []
+os_auth_pw_max_age: 60
+os_auth_pw_min_age: 7 # Discourage password cycling
+os_auth_pw_warn_age: 7
+os_auth_pw_remember: 5 # Specify how many used passwords are record
+os_auth_retries: 5
+os_auth_lockout_time: 600 # Seconds (600 = 10min)
+os_auth_timeout: 60
+os_auth_allow_homeless: false
+os_auth_pam_oddjob_mkhomedir: false
+os_auth_pam_passwdqc_enable: true
+os_auth_pam_passwdqc_options: min=disabled,disabled,16,12,8 # Used in Debian
+os_auth_pam_pwquality_options: try_first_pass retry=3 authtok_type= # Used in RHEL7 and RHEL8
+os_auth_root_ttys: [console, tty1, tty2, tty3, tty4, tty5, tty6]
+os_chfn_restrict: ""
+
+# Set to `false` to disable "chmod 700" of home folders for regular users
+os_chmod_rootuser_home_folder: true
+os_chmod_home_folders: true
+# Specify user accounts, whose home folders shouldn't be chmodded to 700 when "os_chmod_home_folders" is enabled.
+os_ignore_home_folder_users: []
+
+# May contain: change_user
+os_security_users_allow: []
+
+# Set to false to disable password age enforcement on existing users
+os_rootuser_pw_ageing: false
+
+# When enabled and there are multiple users with UID=0, only "root" will be kept. Others will be deleted.
+os_remove_additional_root_users: false
+
+# Set to false to disable password age enforcement on existing users
+os_user_pw_ageing: true
+
+# List of users, where password ageing should not be enforced even if "os_user_pw_ageing" is enabled
+os_users_without_password_ageing: []
+
+# Specify system accounts whose login should not be disabled and password not changed
+os_ignore_users: [vagrant, kitchen]
+os_security_kernel_enable_core_dump: false
+os_security_suid_sgid_enforce: true
+# User-defined blacklist and whitelist
+os_security_suid_sgid_blacklist: []
+os_security_suid_sgid_whitelist: []
+# If this is true, remove any suid/sgid bits from files that are not in the whitelist
+os_security_suid_sgid_remove_from_unknown: false
+
+# Remove packages with known security issues
+os_security_packages_clean: true
+os_security_packages_list: [xinetd, inetd, ypserv, telnet-server, rsh-server, prelink]
+# Allow interactive startup (rhel, centos)
+os_security_init_prompt: true
+# Require root password for single user mode. (rhel, centos)
+os_security_init_single: false
+
+# IPtables configuration
+#os_iptables_enabled: true
+#iptables:
+#  nic_access:
+#    - web_net
+#    - app_net
+#  tcp_port:
+#    - 80
+#    - 443
+#  #udp_port:
+#  #  - 53
+#  #  - 46
+#  ip_access:
+#    - 192.168.175.0/24
+# Apply ufw defaults
+ufw_manage_defaults: false
+
+# Empty variable disables IPT_SYSCTL in /etc/default/ufw
+# By default in Ubuntu it is set to: /etc/ufw/sysctl.conf
+# CAUTION!
+# If you enable it - it overwrites /etc/sysctl.conf file, managed by hardening framework
+ufw_ipt_sysctl: ""
+
+# Default ufw variables
+ufw_default_input_policy: DROP
+ufw_default_output_policy: ACCEPT
+ufw_default_forward_policy: DROP
+ufw_default_application_policy: SKIP
+ufw_manage_builtins: "no"
+ufw_ipt_modules: nf_conntrack_ftp nf_nat_ftp nf_conntrack_netbios_ns
+
+# Set to true to apply rules to support IPv6 (no means only IPv6 on loopback
+# accepted).
+ufw_enable_ipv6: false
+
+sysctl_config:
+  # These settings eliminate an entire class of security vulnerabilities:
+  # time-of-check-time-of-use cross-privilege attacks using guessable
+  # filenames (generally seen as "/tmp file race" vulnerabilities).
+  fs.protected_hardlinks: 1
+  fs.protected_symlinks: 1
+
+  # For more info on the following settings see: https://www.kernel.org/doc/html/latest/admin-guide/sysctl/fs.html
+  # Restrict FIFO special device creation behavior
+  fs.protected_fifos: 1
+  # Restrict regular files creation behavior
+  fs.protected_regular: 2
+
+  # Prevent core dumps with SUID. These are usually only
+  # needed by developers and may contain sensitive information. | sysctl-31
+  fs.suid_dumpable: 0
+
+  # Controls whether core dumps will append the PID to the core filename
+  # Useful for debugging multi-threaded applications
+  kernel.core_uses_pid: 1
+
+  # When an attacker is trying to exploit the local kernel, it is often
+  # helpful to be able to examine where in memory the kernel, modules,
+  # and data structures live. As such, kernel addresses should be treated
+  # as sensitive information.
+  #
+  # Many files and interfaces contain these addresses (e.g. /proc/kallsyms,
+  # /proc/modules, etc), and this setting can censor the addresses. A value
+  # of "0" allows all users to see the kernel addresses. A value of "1"
+  # limits visibility to the root user, and "2" blocks even the root user.
+  #
+  # Some off-the-shelf malware exploit kernel addresses exposed
+  # via /proc/kallsyms so by not making these addresses easily available
+  # we increase the cost of such attack some what; now such malware has
+  # to check which kernel Tails is running and then fetch the corresponding
+  # kernel address map from some external source. This is not hard,
+  # but certainly not all malware has such functionality. | Tails-2
+  kernel.kptr_restrict: 2
+
+  # kexec is dangerous: it enables replacement of the running kernel. | Tails-3
+  kernel.kexec_load_disabled: 1
+
+  # This setting controls how the kernel behaves towards module changes at
+  # runtime. Setting to 1 will disable module loading at runtime.
+  # Setting it to 0 is actually never supported. | sysctl-29
+  # kernel.modules_disabled: 1
+
+  # Magic Sysrq should be disabled, but can also be set to a safe value if so
+  # desired for physical machines. It can allow a safe reboot if the system hangs
+  # and is a 'cleaner' alternative to hitting the reset button. | sysctl-30
+  # The following values are permitted:
+  # * **0**   - disable sysrq
+  # * **1**   - enable sysrq completely
+  # * **>1**  - bitmask of enabled sysrq functions:
+  # * **2**   - control of console logging level
+  # * **4**   - control of keyboard (SAK, unraw)
+  # * **8**   - debugging dumps of processes etc.
+  # * **16**  - sync command
+  # * **32**  - remount read-only
+  # * **64**  - signalling of processes (term, kill, oom-kill)
+  # * **128** - reboot/poweroff
+  # * **256** - nicing of all RT tasks
+  kernel.sysrq: 0
+
+  # Virtual memory regions protection | sysctl-32
+  kernel.randomize_va_space: 2
+
+  # The PTRACE system is used for debugging.  With it, a single user process
+  # can attach to any other dumpable process owned by the same user.  In the
+  # case of malicious software, it is possible to use PTRACE to access
+  # credentials that exist in memory (re-using existing SSH connections,
+  # extracting GPG agent information, etc).
+  #
+  # A PTRACE scope of "0" is the more permissive mode.  A scope of "1" limits
+  # PTRACE only to direct child processes (e.g. "gdb name-of-program" and
+  # "strace -f name-of-program" work, but gdb's "attach" and "strace -fp $PID"
+  # do not).  The PTRACE scope is ignored when a user has CAP_SYS_PTRACE, so
+  # "sudo strace -fp $PID" will work as before.  For more details see:
+  # https://wiki.ubuntu.com/SecurityTeam/Roadmap/KernelHardening#ptrace
+  #
+  # For applications launching crash handlers that need PTRACE, exceptions can
+  # be registered by the debuggee by declaring in the segfault handler
+  # specifically which process will be using PTRACE on the debuggee:
+  #   prctl(PR_SET_PTRACER, debugger_pid, 0, 0, 0);
+  #
+  # In general, PTRACE is not needed for the average running Ubuntu system.
+  # To that end, the default is to set the PTRACE scope to "1".  This value
+  # may not be appropriate for developers or servers with only admin accounts.
+  # kernel.yama.ptrace_scope = 1
+  kernel.yama.ptrace_scope: 1
+
+  # Disable traffic forwarding.
+  # Setting the flag to 0 ensures that a system with multiple interfaces (for example, a hard
+  # proxy), will never be able to forward packets, and therefore, never serve as a router.
+  # | sysctl-01 | sysctl-19
+  net.ipv4.ip_forward: 0
+  net.ipv6.conf.all.forwarding: 0
+
+  # Enable RFC-recommended source validation feature.
+  # If the return packet does not go out the same interface that the corresponding
+  # source packet came from, the packet is dropped (and logged if log_martians is set).
+  # | sysctl-02
+  net.ipv4.conf.all.rp_filter: 1
+  net.ipv4.conf.default.rp_filter: 1
+
+  # Reduce the surface on SMURF attacks. | sysctl-04
+  # Make sure to ignore ECHO broadcasts, which are only required in broad network analysis.
+  net.ipv4.icmp_echo_ignore_broadcasts: 1
+
+  # Some routers (and some attackers) will send responses that violate RFC-1122 and attempt
+  # to fill up a log file system with many useless error messages.
+  # | sysctl-03
+  net.ipv4.icmp_ignore_bogus_error_responses: 1
+
+  # Limit the amount of traffic the system uses for ICMP. | sysctl-05
+  net.ipv4.icmp_ratelimit: 100
+
+  # Adjust the ICMP ratelimit to include ping, dst unreachable,
+  # source quench, ime exceed, param problem, timestamp reply, information reply | sysctl-06
+  net.ipv4.icmp_ratemask: 88089
+
+  # Disable TCP timestamps in order to not reveal system uptime. | sysctl-07
+  net.ipv4.tcp_timestamps: 0
+
+  # Define restriction level for announcing the local source IP | sysctl-08
+  net.ipv4.conf.all.arp_ignore: 1
+
+  # Define mode for sending replies in response to
+  # received ARP requests that resolve local target IP addresses | sysctl-09
+  net.ipv4.conf.all.arp_announce: 2
+
+  # RFC 1337 fix F1 | sysctl-10
+  net.ipv4.tcp_rfc1337: 1
+
+  # Attackers use SYN flood attacks to perform a denial of service attack on a system
+  # by sending many SYN packets without completing the three way handshake.
+  # This will quickly use up slots in the kernel's half-open connection queue and
+  # prevent legitimate connections from succeeding.
+  # SYN cookies allow the system to keep accepting valid connections, even if
+  # under a denial of service attack. CIS Distro Independent 3.2.8.
+  net.ipv4.tcp_syncookies: 1
+
+  # Send(router) or accept(host) RFC1620 shared media redirects | sysctl-12
+  net.ipv4.conf.all.shared_media: 1
+  net.ipv4.conf.default.shared_media: 1
+
+  # Accepting source route can lead to malicious networking behavior,
+  # so disable it if not needed. | sysctl-13
+  net.ipv4.conf.all.accept_source_route: 0
+  net.ipv4.conf.default.accept_source_route: 0
+  net.ipv6.conf.all.accept_source_route: 0
+  net.ipv6.conf.default.accept_source_route: 0
+
+  # For non-routers: don't send redirects.
+  # An attacker could use a compromised host to send invalid ICMP redirects to other
+  # router devices in an attempt to corrupt routing and have users access a system
+  # set up by the attacker as opposed to a valid system.
+  # | sysctl-16
+  net.ipv4.conf.all.send_redirects: 0
+  net.ipv4.conf.default.send_redirects: 0
+
+  # Log martian packets
+  # This feature logs packets with un-routable source addresses to the kernel log.
+  # Enabling this feature and logging these packets allows an administrator to investigate
+  # the possibility that an attacker is sending spoofed packets to their system.
+  # | sysctl-17
+  net.ipv4.conf.all.log_martians: 1
+  net.ipv4.conf.default.log_martians: 1
+
+  # Accepting redirects can lead to malicious networking behavior, so disable
+  # it if not needed.
+  # Attackers could use bogus ICMP redirect messages to maliciously alter the system
+  # routing tables and get them to send packets to incorrect networks and allow
+  # your system packets to be captured.
+  # Setting net.ipv4.conf.all.secure_redirects to 0 protects the system from
+  # routing table updates by possibly compromised known gateways.
+  # | sysctl-13 | sysctl-14 | sysctl-15 | sysctl-20
+  net.ipv4.conf.default.accept_redirects: 0
+  net.ipv4.conf.all.accept_redirects: 0
+  net.ipv4.conf.all.secure_redirects: 0
+  net.ipv4.conf.default.secure_redirects: 0
+  net.ipv6.conf.default.accept_redirects: 0
+  net.ipv6.conf.all.accept_redirects: 0
+
+  # Ignore RAs on Ipv6. | sysctl-25
+  net.ipv6.conf.all.accept_ra: 0
+  net.ipv6.conf.default.accept_ra: 0
+
+  # Disable acceptance of IPv6 router solicitations messages | sysctl-21
+  net.ipv6.conf.default.router_solicitations: 0
+  net.ipv6.conf.all.router_solicitations: 0
+
+  # Disable Accept Router Preference from router advertisement | sysctl-22
+  net.ipv6.conf.default.accept_ra_rtr_pref: 0
+
+  # Disable learning Prefix Information from router advertisement | sysctl-23
+  net.ipv6.conf.default.accept_ra_pinfo: 0
+
+  # Disable learning Hop limit from router advertisement | sysctl-24
+  net.ipv6.conf.default.accept_ra_defrtr: 0
+
+  # Disable IPv6 autoconfiguration | sysctl-26
+  net.ipv6.conf.default.autoconf: 0
+  net.ipv6.conf.all.autoconf: 0
+
+  # Disable neighbor solicitations to send out per address | sysctl-27
+  net.ipv6.conf.default.dad_transmits: 0
+
+  # Assign one global unicast IPv6 addresses to each interface | sysctl-28
+  net.ipv6.conf.default.max_addresses: 1
+
+  # Protect the zero page of memory from userspace mmap to prevent kernel
+  # NULL-dereference attacks against potential future kernel security
+  # vulnerabilities.  (Added in kernel 2.6.23.)
+  #
+  # While this default is built into the Ubuntu kernel, there is no way to
+  # restore the kernel default if the value is changed during runtime; for
+  # example via package removal (e.g. wine, dosemu).  Therefore, this value
+  # is reset to the secure default each time the sysctl values are loaded.
+  vm.mmap_min_addr: 65536
+
+  # These settings are set to the maximum supported value in order to
+  # improve ASLR effectiveness for mmap, at the cost of increased
+  # address-space fragmentation. | Tail-1
+  vm.mmap_rnd_bits: 32
+  vm.mmap_rnd_compat_bits: 16
+
+# Do not delete the following line or otherwise the playbook will fail
+# at task 'create a combined sysctl-dict if overwrites are defined'
+sysctl_overwrite: {}
+# Disable unused filesystems
+os_unused_filesystems:
+  - cramfs
+  - freevxfs
+  - jffs2
+  - hfs
+  - hfsplus
+  - squashfs
+  - udf
+  - vfat
+  # Obsolete network protocols that should be disabled
+  # per CIS Oracle Linux 6 Benchmark (2016)
+  - dccp # CIS 3.5.1
+  - rds # CIS 3.5.3
+  - sctp # CIS 3.5.2
+  - tipc # CIS 3.5.4
+
+# Whitelist for used filesystems
+os_filesystem_whitelist: []
+# Set to false to turn the role into a no-op. Useful when using
+# the Ansible role dependency mechanism.
+os_hardening_enabled: true
+
+# Set to false to disable installing and configuring auditd.
+os_auditd_enabled: true
+os_auditd_template: etc/audit/auditd.conf.j2
+os_auditd_flush: INCREMENTAL
+os_auditd_freq: 20
+os_auditd_max_log_file: 6
+os_auditd_max_log_file_action: keep_logs
+os_auditd_write_logs: true
+os_auditd_log_file: /var/log/audit/audit.log
+os_auditd_log_format: RAW
+os_auditd_admin_space_left: 50
+os_auditd_space_left: 75
+os_auditd_space_left_action: SYSLOG
+os_auditd_admin_space_left_action: SUSPEND
+os_auditd_disk_full_action: SUSPEND
+os_auditd_disk_error_action: SUSPEND
+os_auditd_action_mail_acct: root
+os_auditd_log_group: root
+os_auditd_num_logs: 5
+os_auditd_name_format: NONE
+
+# Set the SELinux state, which can be either disabled, permissive, or enforcing.
+os_selinux_state: enforcing
+# Set the SELinux polixy.
+os_selinux_policy: targeted
+
+# Mount options for proc in /etc/fstab.
+proc_mnt_options: rw,nosuid,nodev,noexec,relatime
+
+# Set to false to disable installing and configuring cron.
+os_cron_enabled: true
+
+# Set to true to disable ctrl-alt-del key combination.
+os_ctrlaltdel_disabled: false
+
+# Set to false to disable installing and configuring limits.
+os_limits_enabled: true
+
+# Set to false to disable installing and configuring login_defs for newly created users.
+os_login_defs_enabled: true
+
+# Set to false to disable installing and configuring minimize_access.
+os_minimize_access_enabled: true
+
+# Set to false to disable installing and configuring pam.
+os_pam_enabled: true
+
+# Set to false to disable installing and configuring modprobe.
+os_modprobe_enabled: true
+
+# Set to false to disable installing and configuring profile.
+os_profile_enabled: true
+
+# Set to false to disable installing and configuring securetty.
+os_securetty_enabled: true
+
+# Set timeout in seconds for logout users automatically after time. Setting this to `0` disables the timeout.
+os_security_auto_logout: 0
+
+# Set to false to disable installing and configuring sysctl.
+os_sysctl_enabled: true
+
+# Set to false to disable installing and configuring user_accounts.
+os_user_accounts_enabled: true
+
+# Set to false to disable installing and configuring rhosts.
+os_rhosts_enabled: true
+
+# Set to false to disable installing and configuring yum.
+os_yum_enabled: true
+
+# List of yum repository files under /etc/yum.repos.d/ which should not be altered.
+os_yum_repo_file_whitelist: []
+# Set to false to disable installing and configuring apt.
+os_apt_enabled: true
+
+# Set to false to disable installing and configuring selinux.
+os_selinux_enabled: true
+
+# Define the number of SHA rounds.
+# With a lot of rounds brute forcing the password is more difficult. But note also that it more CPU resources will be needed to authenticate users.
+# The values must be inside the 1000-999999999 range.
+os_sha_crypt_min_rounds: "640000"
+os_sha_crypt_max_rounds: "640000"
+
+os_mnt_boot_dir_mode: "0700"
+os_mnt_boot_enabled: false
+os_mnt_boot_src: ""
+os_mnt_boot_options: rw,nosuid,nodev,noexec
+os_mnt_boot_filesystem: ""
+os_mnt_boot_dump: ""
+os_mnt_boot_passno: ""
+
+os_mnt_dev_dir_mode: "0755"
+os_mnt_dev_enabled: true
+os_mnt_dev_src: devtmpfs
+os_mnt_dev_options: rw,nosuid,noexec
+os_mnt_dev_filesystem: devtmpfs
+os_mnt_dev_dump: ""
+os_mnt_dev_passno: ""
+
+os_mnt_dev_shm_dir_mode: "1777"
+os_mnt_dev_shm_enabled: true
+os_mnt_dev_shm_src: tmpfs
+os_mnt_dev_shm_options: rw,nosuid,nodev,noexec
+os_mnt_dev_shm_filesystem: tmpfs
+os_mnt_dev_shm_dump: ""
+os_mnt_dev_shm_passno: ""
+
+os_mnt_home_dir_mode: "0755"
+os_mnt_home_enabled: false
+os_mnt_home_src: ""
+os_mnt_home_options: rw,nosuid,nodev
+os_mnt_home_filesystem: ""
+os_mnt_home_dump: ""
+os_mnt_home_passno: ""
+
+os_mnt_run_dir_mode: "0755"
+os_mnt_run_enabled: true
+os_mnt_run_src: tmpfs
+os_mnt_run_options: rw,nosuid,nodev
+os_mnt_run_filesystem: tmpfs
+os_mnt_run_dump: ""
+os_mnt_run_passno: ""
+
+os_mnt_tmp_dir_mode: "1777"
+os_mnt_tmp_enabled: false
+os_mnt_tmp_src: ""
+os_mnt_tmp_options: rw,nosuid,nodev,noexec
+os_mnt_tmp_filesystem: ""
+os_mnt_tmp_dump: ""
+os_mnt_tmp_passno: ""
+
+os_mnt_var_dir_mode: "0755"
+os_mnt_var_enabled: false
+os_mnt_var_src: ""
+os_mnt_var_options: rw,nosuid,nodev
+os_mnt_var_filesystem: ""
+os_mnt_var_dump: ""
+os_mnt_var_passno: ""
+
+os_mnt_var_log_dir_mode: "0755"
+os_mnt_var_log_enabled: false
+os_mnt_var_log_src: ""
+os_mnt_var_log_options: rw,nosuid,nodev,noexec
+os_mnt_var_log_filesystem: ""
+os_mnt_var_log_dump: ""
+os_mnt_var_log_passno: ""
+
+os_mnt_var_log_audit_dir_mode: "0700"
+os_mnt_var_log_audit_enabled: false
+os_mnt_var_log_audit_src: ""
+os_mnt_var_log_audit_options: rw,nosuid,nodev,noexec
+os_mnt_var_log_audit_filesystem: ""
+os_mnt_var_log_audit_dump: ""
+os_mnt_var_log_audit_passno: ""
+
+os_mnt_var_tmp_dir_mode: "1777"
+os_mnt_var_tmp_enabled: false
+os_mnt_var_tmp_src: ""
+os_mnt_var_tmp_options: rw,nosuid,nodev,noexec
+os_mnt_var_tmp_filesystem: ""
+os_mnt_var_tmp_dump: ""
+os_mnt_var_tmp_passno: ""
+
+#
+# .netrc User whitelist
+# keep .netrc file for users in whitelist
+os_netrc_enabled: true
+os_netrc_whitelist_user: []

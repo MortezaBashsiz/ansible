@@ -1,0 +1,12 @@
+##################################################
+# DO Community Playbooks: Apache on Ubuntu 18.04
+##################################################
+---
+- hosts: stage
+  become: true
+
+  vars_files:
+    - ../roles/apache/vars/main.yml
+
+  roles:
+    - apache

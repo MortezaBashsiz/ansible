@@ -5,9 +5,6 @@ V2RAY_PKGS_LIST:
   - v2ray
   - uuid
 
-V2RAY_CFG_DOMAIN: "adas"
-V2RAY_CFG_PREDOMAIN: "nokhod"
-
 V2RAY_INSTANCES:
   - name: v2ray01
     listen: "127.0.0.1"

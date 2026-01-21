@@ -1,0 +1,15 @@
+---
+- name: Add a host to SSH configuration file
+  community.general.ssh_config:
+    user: "{{ lookup('env', 'USER') }}"
+    remote_user: hojat
+    host: "{{ inventory_hostname }}"
+    hostname: "{{ IPADDRESS }}"
+    port: "{{ ansible_port }}"
+    state: present
+    group: staff
+    strict_host_key_checking: no
+  throttle: 1
+  delegate_to: localhost
+  tags:
+    - create_ssh_config

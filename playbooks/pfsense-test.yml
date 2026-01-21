@@ -1,0 +1,8 @@
+---
+- name: Test connectivity to pfSense
+  hosts: pfsense-test
+  gather_facts: no
+  connection: network_cli
+
+  roles:
+    - ping-pfsense

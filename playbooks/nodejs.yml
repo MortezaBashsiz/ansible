@@ -1,0 +1,34 @@
+---
+- hosts: test
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: install node and npm
+      apt: name={{ item }} state=present
+      with_items:
+        - nodejs
+        - npm
+
+    - name: Ensure Node.js app folder exists.
+      file: "path={{ node_app_location }} state=directory"
+
+    - name: Copy example Node.js app to server.
+      copy: "src=app dest={{ node_app_location }}"
+
+    - name: Install app dependencies defined in package.json.
+      npm: path={{ node_app_location }}/app
+
+    - name: Install forever globally
+      npm:
+        name: forever
+        global: yes
+
+    - name: Check list of running Node.js apps.
+      command: forever list
+      register: forever_list
+      changed_when: false
+
+    - name: Start example Node.js app.
+      command: "forever start {{ node_app_location }}/app/app.js"
+      when: "forever_list.stdout.find(node_app_location + '/app/app.js') == -1"

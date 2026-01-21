@@ -1,0 +1,6 @@
+- name: Delete VMs
+  hosts: template
+  become: true
+  gather_facts: false
+  roles:
+    - { role: delete_vms, tags: 'delete_vms' }

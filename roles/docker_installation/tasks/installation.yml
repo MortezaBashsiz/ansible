@@ -1,0 +1,18 @@
+---
+
+- name: remove default packaged docker
+  ansible.builtin.package:
+    name:
+      - docker
+      - docker-engine
+    state: absent
+
+- name: install docker
+  ansible.builtin.package:
+    name: "{{ docker_packages }}"
+    state: present
+  notify:
+    - restart containerd
+    - restart docker
+
+

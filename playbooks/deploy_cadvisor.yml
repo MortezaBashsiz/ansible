@@ -1,0 +1,17 @@
+---
+- name: Deploy cAdvisor
+  hosts: linuxs
+  become: yes
+  tasks:
+    - name: Ensure cAdvisor Docker container is running
+      docker_container:
+        name: cadvisor
+        image: nexus.zaraamad.ir:5006/repository/docker-zaraamad/cadvisor:v0.47.0
+        ports:
+          - "9323:8080"
+        volumes:
+          - /:/rootfs:ro
+          - /var/run:/var/run:ro
+          - /sys:/sys:ro
+          - /var/lib/docker/:/var/lib/docker:ro
+        restart_policy: always

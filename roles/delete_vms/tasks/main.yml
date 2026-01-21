@@ -1,0 +1,7 @@
+---
+- name: Deleting "{{ inventory_hostname }}" VMs
+  import_tasks: delete_vms.yml
+  tags:
+    - delete_vms
+    - vms_management
+

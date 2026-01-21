@@ -1,0 +1,39 @@
+---
+- name: Copy Wazuh agent package to remote server
+  copy:
+    src: wazuh-agent_4.9.0-1_amd64.deb
+    dest: /tmp/wazuh-agent_4.9.0-1_amd64.deb
+
+- name: Install Wazuh agent package
+  apt:
+    deb: /tmp/wazuh-agent_4.9.0-1_amd64.deb
+  become: yes
+
+- name: Install dependencies if required
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - htop
+  become: yes
+
+- name: Configure Wazuh agent
+  template:
+    src: ossec.conf.j2
+    dest: /var/ossec/etc/ossec.conf
+  become: yes
+
+- name: Reload systemd and enable wazuh-agent
+  systemd:
+    daemon_reload: yes
+    name: wazuh-agent
+    enabled: yes
+    state: started
+  become: yes
+
+- name: Clean up the installation file
+  file:
+    path: /tmp/wazuh-agent_4.9.0-1_amd64.deb
+    state: absent
+  become: yes
+

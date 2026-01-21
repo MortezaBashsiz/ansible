@@ -1,0 +1,17 @@
+---
+- name: Install iptables persistance on "{{ inventory_hostname }}"
+  ansible.builtin.apt:
+    name: iptables-persistent
+    state: present
+
+- name: Configure iptables
+  ansible.builtin.template:
+    src: etc/iptables/rules.v4.j2
+    dest: /etc/iptables/rules.v4
+    owner: root
+    group: root
+    mode: "0640"
+  notify:
+    - Restart iptables
+  tags: iptables
+

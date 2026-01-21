@@ -1,0 +1,45 @@
+---
+
+init_hosts:
+  hosts:
+    host1:
+    host2:
+
+v2ray:
+  hosts:
+    192.168.56.151:
+
+template:
+  hosts:
+    template_tala:
+    test-server1:
+    Zaraamad-UbuS24-Prod1-174.14:
+    Tala-UbuS24-Prod-174.103:
+    Tala-UbuS24-Gitlab-174.104:
+    Tala-UbuS24-Mon-174-105:
+    Zaraamad-UbuS24-Prod2-174-15:
+    Zaraamad-UbuS24-backup-174-16:
+    Tala-UbuS24-Stage-174-106:
+    zaraamad-UbuS24-Prod3-174-17:
+    Noaien-UbuS24-Operator-103-51:
+    Tala-UbuS24-Wazuh-175-107:
+    Noaien-UbuS24-SMS-7-74:
+    Zaraamad-UbuS24-Dev-172-18:
+    Noaien-UbuS24-Kube-VIP-103-114:
+shadowsocks:
+  hosts:
+    example1:
+
+web_databases:
+  hosts:
+    db1.demo.local:
+    db2.demo.local:
+      ansible_user: user
+      ansible_port: 22
+
+zar:
+  hosts:
+    gitlab.zaraamad:
+#    nexus.zaraamad:
+    stage.zaraamad:
+    prod.zaraamad:

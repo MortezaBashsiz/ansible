@@ -1,0 +1,58 @@
+---
+- name: Ensure Suricata is installed on Debian-based systems
+  apt:
+    name: suricata
+    state: present
+  when: ansible_os_family == "Debian"
+  register: suricata_install
+  failed_when: suricata_install is failed
+
+- name: Ensure Suricata is installed on RedHat-based systems
+  yum:
+    name: suricata
+    state: presen
+  when: ansible_os_family == "RedHat"
+  register: suricata_install
+  failed_when: suricata_install is failed
+
+- name: Fail if Suricata installation fialed
+  fail: 
+    msg: "Suricata installation failed. Stopping playbook execution."
+  when: suricata_install is failed
+
+- name: Ensure Suricata service is running
+  service:
+    name: suricata
+    state: started
+    enabled: true
+  register: suricata_state
+
+- name: Fail if Suricata service is not running
+  fail:
+    msg: "Suricata service is not running. Stopping playbook execution."
+  when: suricata_state != "started"
+
+
+- name: Update Suricata rules
+  command: suricata-update
+  notify: Restart Suricata
+
+- name: Set permissions on Suricata rules
+  file:
+    path: "{{ item }}"
+    mode: '0640'
+  with_items:
+    - /etc/suricata/rules/*.rules
+    - /etc/lib/suricata/rules/*.rules
+
+- name: Configure Suricata YAML
+  template:
+    src: suricata.yml.j2
+    dest: /etc/suricata/suricata.yml
+  notify: Restart Suricata
+
+- name: Restart and enable Suricata service
+  service:
+    name: suricata
+    state: restarted
+    enabled: true

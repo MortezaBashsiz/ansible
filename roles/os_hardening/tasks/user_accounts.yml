@@ -1,0 +1,111 @@
+---
+- name: Read local linux user database
+  ansible.builtin.getent:
+    database: passwd
+    # creates a dict for each user containing UID/HOMEDIR etc...
+  # skip this task if getent was run before without specifying a key (single entry)
+  when: getent_passwd is undefined or
+        getent_passwd | length <= 1
+
+- name: Read local linux shadow database
+  ansible.builtin.getent:
+    database: shadow
+
+- name: Extract system accounts from local user database
+  loop: "{{ getent_passwd.keys() | list }}"
+  when:
+    - getent_passwd[item][1]|int > 0
+    - getent_passwd[item][1]|int <= os_auth_sys_uid_max|int
+    - item is not in os_always_ignore_users     # skip users from "os_always_ignore_users" list (taken from role "vars")
+    - item is not in os_ignore_users            # skip users from "os_ignore_users"        list (taken from role "defaults")
+  ansible.builtin.set_fact:
+    system_users: "{{ system_users | default([]) + [item] }}"
+
+- name: Extract regular (non-system, non-root) accounts from local user database
+  loop: "{{ getent_passwd.keys() | list }}"
+  when:
+    - getent_passwd[item][1]|int >= os_auth_uid_min|int
+    - getent_passwd[item][1]|int <= os_auth_uid_max|int
+    - item is not in os_always_ignore_users # skip users from "os_always_ignore_users" list (taken from role "vars")
+    - item is not in os_ignore_users # skip users from "os_ignore_users"        list (taken from role "defaults")
+  ansible.builtin.set_fact:
+    regular_users: "{{ regular_users | default([]) + [item] }}"
+
+- name: Set password ageing for existing regular (non-system, non-root) accounts
+  ansible.builtin.user:
+    name: "{{ item }}"
+    password_expire_min: "{{ os_auth_pw_min_age }}"
+    password_expire_max: "{{ os_auth_pw_max_age }}"
+  loop: "{{ regular_users }}"
+  when:
+    - os_user_pw_ageing
+    - regular_users is defined and (regular_users | length > 0)
+    - item not in os_users_without_password_ageing
+    - getent_shadow[item][0] is not match("\*") # password hashes containing illegal characters like "*" are unusable (locked) and don't need to age
+    - getent_shadow[item][0] is not match("\!") # password hashes containing illegal characters like "!" are unusable (locked) and don't need to age
+
+- name: Extract root account(s) from local user database
+  loop: "{{ getent_passwd.keys() | list }}"
+  when:
+    - getent_passwd[item][1]|int == 0
+  ansible.builtin.set_fact:
+    root_users: "{{ root_users | default([]) + [item] }}"
+
+- name: Set ownership of root user home directory(s) to 0700
+  ansible.builtin.file:
+    mode: "0700"
+    owner: "{{ item }}"
+    path: "{{ getent_passwd[item][4] }}"
+    state: directory
+  loop: "{{ root_users }}"
+  when:
+    - os_chmod_rootuser_home_folder | bool
+
+- name: Set password ageing for root user(s)
+  ansible.builtin.user:
+    name: "{{ item }}"
+    password_expire_min: "{{ os_auth_pw_min_age }}"
+    password_expire_max: "{{ os_auth_pw_max_age }}"
+  loop: "{{ root_users }}"
+  when:
+    - os_rootuser_pw_ageing | bool
+    - getent_shadow[item][0] is not match("\*") # password hashes containing illegal characters like "*" are unusable (locked) and don't need to age
+    - getent_shadow[item][0] is not match("\!") # password hashes containing illegal characters like "!" are unusable (locked) and don't need to age
+
+- name: Remove additional users with UID=0 ("root" user is not touched)
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ root_users }}"
+  when:
+    - os_remove_additional_root_users|bool
+    - root_users|length > 1
+    - item != "root"
+
+- name: Remove shell for linux system accounts
+  ansible.builtin.user:
+    name: '{{ item }}'
+    shell: '{{ os_nologin_shell_path }}'
+    createhome: false
+  loop: "{{ system_users }}"
+
+- name: Lock passwords from linux system accounts
+  ansible.builtin.user:
+    name: '{{ item }}'
+    password: '*'
+    createhome: false
+  loop: "{{ system_users }}"
+  when:
+    - getent_shadow[item][0] is not match("\!") # password hashes containing illegal characters like "!" are unusable already (locked)
+
+- name: Limit access to home directories of regular (non-system, non-root) accounts
+  ansible.builtin.file:
+    mode: "0700"
+    owner: "{{ item }}"
+    path: "{{ getent_passwd[item][4] }}"
+    state: directory
+  loop: "{{ regular_users }}"
+  when:
+    - os_chmod_home_folders | bool
+    - regular_users is defined and (regular_users | length > 0)
+    - item not in os_ignore_home_folder_users | default([])

@@ -1,0 +1,110 @@
+---
+- name: Deploy Prometheus, Grafana, and cAdvisor as Docker Containers
+  hosts: localhost
+  gather_facts: yes
+  become: yes
+  vars:
+    uid: "{{ lookup('env', 'UID') }}"
+    gid: "{{ lookup('env', 'GID') }}"
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Ensure prometheus-grafana_prom_data volume exists
+      docker_volume:
+        name: prometheus-grafana_prom_data
+        state: present
+
+    - name: Ensure prometheus_data volume exists
+      docker_volume:
+        name: prometheus_data
+        state: present
+
+    - name: Check if Prometheus config has changed
+      stat:
+        path: "{{ playbook_dir }}/prometheus.yml"
+      register: prometheus_config
+
+
+
+    - name: Ensure Prometheus Docker container is running
+      docker_container:
+        name: prometheus
+        image: prom/prometheus:latest
+        command:
+          - --storage.tsdb.retention.time=7d
+          - --config.file=/etc/prometheus/prometheus.yml
+        ports:
+          - "9090:9090"
+        volumes:
+          - "{{ playbook_dir }}/prometheus.yml:/etc/prometheus/prometheus.yml"
+          - prometheus_data:/prometheus
+        etc_hosts:
+          git.zaraamad.ir: 192.168.174.3
+          registry.zaraamad.ir: 192.168.174.3
+          nexus.zaraamad.ir: 192.168.174.4
+          stage: 192.168.174.5
+          prod: 192.168.174.6
+          rahtal: 192.168.174.7
+          gitlab: 192.168.174.3
+          pfsense: 192.168.174.1
+          nexus: 192.168.174.4
+          monitoring: 192.168.174.8
+          wazuh: 192.168.174.9
+          prod1: 192.168.174.14
+          Tala-UbuS24-Prod-174: 192.168.175.103
+        restart_policy: always
+      notify: Restart Prometheus if config changed 
+      
+    - name: Restart Prometheus container if config changed
+      docker_container:
+        name: prometheus
+        state: started
+      when: prometheus_config.stat.mtime != ansible_date_time.epoch | int
+
+    - name: Ensure Grafana Docker container is running
+      docker_container:
+        name: grafana
+        image: grafana/grafana:latest
+        ports:
+          - "3000:3000"
+        volumes:
+          - prometheus-grafana_prom_data:/var/lib/grafana
+          - "{{ playbook_dir }}/grafana-provisioning/datasources:/etc/grafana/provisioning/datasources"
+        user: "{{ uid }}:{{ gid }}"
+        restart_policy: always
+
+    - name: Ensure cAdvisor Docker container is running
+      docker_container:
+        name: cadvisor
+        image: nexus.zaraamad.ir:5006/repository/docker-zaraamad/cadvisor:v0.47.0
+        ports:
+          - "9323:8080"
+        volumes:
+          - /:/rootfs:ro
+          - /var/run:/var/run:ro
+          - /sys:/sys:ro
+          - /var/lib/docker/:/var/lib/docker:ro
+        restart_policy: always
+
+    - name: Wait for Prometheus to be up
+      wait_for:
+        port: 9090
+        delay: 10
+        timeout: 60
+
+    - name: Wait for Grafana to be up
+      wait_for:
+        port: 3000
+        delay: 10
+        timeout: 60
+
+    - name: Wait for cAdvisor to be up
+      wait_for:
+        port: 9323
+        delay: 10
+        timeout: 60
+
+  handlers:
+    - name: Restart Prometheus if config changed
+      docker_container:
+        name: prometheus
+        state: started

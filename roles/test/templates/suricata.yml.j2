@@ -1,0 +1,18 @@
+af-packet:
+  - interface: >-
+	{% set found_interface = false %}
+	{% for interface_data in ansible_facts['interfaces'] %}
+	  {% if not found_interface %}
+	    {% if data['ipv4'] is defined %}
+	      {% for ip in data['ipv4']['address'] %}
+	        {% if ip.startswith('192.168.174.') %}
+	          {{ interface_data['name'] }}
+	          {% set found_interface = true %}
+	        {% endif %}
+	      {% endfor %}
+	    {% endif %}
+	  {% endif %}
+	{% endfor %}
+    cluster-id: 99
+    cluster-type: cluster_flow
+    defrag: yes

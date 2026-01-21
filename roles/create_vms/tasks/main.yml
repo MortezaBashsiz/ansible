@@ -1,0 +1,24 @@
+---
+- name: Creating the "{{ inventory_hostname }}" VM
+  import_tasks: create_vms.yml
+  tags:
+    - create_vms
+    - setup_vms
+    - vms_management
+
+- name: Creating SSH Config for "{{ inventory_hostname }}"
+  import_tasks: create_ssh_config.yml
+  tags:
+    - create_vms
+    - setup_vms
+    - create_ssh_config
+    - vms_management
+
+- name: Change disk partition
+  import_tasks: lvm_resize.yml
+  tags:
+    - create_vms
+    - setup_vms
+    - resize_lvm
+    - vms_management
+

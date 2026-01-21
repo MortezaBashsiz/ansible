@@ -1,0 +1,20 @@
+---
+- name: Configure Suricata YAML
+  template:
+    src: suricata.yml.j2
+    dest: /tmp/suricata.yml
+
+- name: Debug interfaces
+  debug:
+    var: ansible_facts['interfaces']
+
+- name: Print interfaces for debugging
+  debug:
+    msg: "{{ item }}"
+  with_items: "{{ ansible_facts['interfaces'] }}"
+
+- name: Print interface IP addresses
+  debug:
+    msg: "{{ ansible_facts['interfaces'][item].ipv4 }}"
+  when: ansible_facts['interfaces'][item].ipv4 is defined
+  loop: "{{ ansible_facts['interfaces'] }}"

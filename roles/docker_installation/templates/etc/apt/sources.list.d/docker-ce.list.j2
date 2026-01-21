@@ -1,0 +1,13 @@
+# docker-ce apt repositories
+# managed via Ansible docker role: https://github.com/gbolo/ansible-role-docker
+
+{% set repo = "stable" %}
+{% if docker_repo.channel.nightly_enabled %}
+{% set repo = "edge" %}
+{% endif %}
+{% if docker_repo.channel.test_enabled %}
+{% set repo = "test" %}
+{% endif %}
+
+deb [arch={{ docker_apt_arch | default('amd64') }}] {{ docker_repo.repo_url }} {{ ansible_distribution_release }} {{ repo }}
+

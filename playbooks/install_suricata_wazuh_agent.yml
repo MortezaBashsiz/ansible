@@ -1,0 +1,9 @@
+---
+- hosts: stage.zaraamad
+  become: true
+  gather_facts: yes
+  roles:
+    - test
+    #- system_update
+    #- suricata
+    #- wazuh-agent

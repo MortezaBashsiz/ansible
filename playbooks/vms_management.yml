@@ -1,0 +1,6 @@
+- name: VMs management
+  hosts: template
+  become: true
+  gather_facts: false
+  roles:
+    - vms_manangement

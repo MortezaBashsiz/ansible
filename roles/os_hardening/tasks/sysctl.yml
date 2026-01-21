@@ -1,0 +1,59 @@
+---
+- name: Protect sysctl.conf
+  ansible.builtin.file:
+    path: /etc/sysctl.conf
+    owner: root
+    group: root
+    mode: "0440"
+    state: touch
+    modification_time: preserve
+    access_time: preserve
+
+- name: Set Daemon umask, do config for rhel-family | NSA 2.2.4.1
+  ansible.builtin.template:
+    src: etc/sysconfig/rhel_sysconfig_init.j2
+    dest: /etc/sysconfig/init
+    owner: root
+    group: root
+    mode: "0544"
+  when: ansible_facts.os_family == 'RedHat'
+
+- name: Change sysctls
+  when: ansible_virtualization_type not in ['docker', 'lxc', 'openvz']
+  block:
+    - name: Create a combined sysctl-dict if os-dependent sysctls are defined
+      ansible.builtin.set_fact:
+        sysctl_config: "{{ sysctl_config | combine(sysctl_custom_config) }}"
+      when: sysctl_custom_config | default()
+
+    # sysctl_rhel_config is kept for backwards-compatibility. use sysctl_custom_config instead
+    - name: Create a combined sysctl-dict if os-dependent sysctls are defined
+      ansible.builtin.set_fact:
+        sysctl_config: "{{ sysctl_config | combine(sysctl_rhel_config) }}"
+      when: sysctl_rhel_config | default()
+
+    - name: Create a combined sysctl-dict if overwrites are defined
+      ansible.builtin.set_fact:
+        sysctl_config: "{{ sysctl_config | combine(sysctl_overwrite) }}"
+      when: sysctl_overwrite | default()
+
+    - name: Change various sysctl-settings, look at the sysctl-vars file for documentation
+      ansible.posix.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        sysctl_set: true
+        state: present
+        reload: true
+        ignoreerrors: true
+      with_dict: "{{ sysctl_config }}"
+      when: item.key not in sysctl_unsupported_entries | default()
+
+- name: Apply ufw defaults
+  ansible.builtin.template:
+    src: etc/default/ufw.j2
+    dest: /etc/default/ufw
+    mode: "0644"
+  when:
+    - ufw_manage_defaults
+    - ansible_facts.os_family == 'Debian'
+  tags: ufw

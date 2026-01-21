@@ -1,0 +1,27 @@
+VM_FOLDER: tala
+DISK_SIZE: 50
+DATASTORE_NAME: SSD-2TB
+MEMORY_SIZE: 8192
+CPU_SIZE: 6
+NETWORK_NAME: vlan175
+IPADDRESS: 192.168.175.101
+DOMAIN: noaien.com
+DNS_SERVER1: 8.8.8.8
+DNS_SERVER2: 4.2.2.4
+# IPtables configuration
+os_iptables_enabled: true
+iptables:
+  nic_access:
+    - web_net
+    - app_net
+  tcp_port:
+    - 80
+    - 443
+    - 8000
+  #udp_port:
+  #  - 53
+  #  - 46
+  ip_access:
+    - 192.168.175.0/24
+    - 172.16.163.0/24
+    - 172.17.163.0/24

@@ -1,0 +1,49 @@
+---
+- pause:
+    prompt: "Are you sure delete '{{ inventory_hostname }}' VMs? (Y/n)"
+    echo: true
+  register: confirm_delete
+  run_once: true
+
+- name: Install multi python packages
+  ansible.builtin.pip:
+    name:
+      - pymomi
+  delegate_to: localhost
+  run_once: true
+  when confirm.delete.user_input|lower == 'y'
+
+- name: Set powerstate of virtual machine to poweroff
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: False
+    name: "{{ inventory_hostname }}"
+    state: poweredoff
+  delegate_to: localhost
+  when: confirm_delete.user_input|lower == 'y'
+
+- name: Remove virtual machine from inventory
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    folder: "{{ VM_FOLDER }}"
+    datastore: "{{ DATASTORE_NAME  }}"
+    validate_certs: False
+    name: "{{ inventory_hostname }}"
+    delete_from_inventory: True
+    state: absent
+  delegate_to: localhost
+  when: confirm_delete.user_input|lower == 'y'
+
+- name: Delete "{{ inventory_hostname }}" SSH configuration file
+  community.general.ssh_config:
+    user: "{{ lookup('env', 'USER') }}"
+    host: "{{ inventory_hostname }}"
+    state: absent
+    group: staff
+  throttle: 1
+  delegate_to: localhost
+  when: confirm_delete.user_input|lower == 'y'

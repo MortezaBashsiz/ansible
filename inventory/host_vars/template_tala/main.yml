@@ -1,0 +1,4 @@
+#ansible_port: 3221
+#ansible_user: hojat
+##ansible_port: 2221
+#ansible_python_interpreter: /usr/bin/python3.12

@@ -1,0 +1,65 @@
+---
+- name: Disable coredumps
+  when: not os_security_kernel_enable_core_dump | bool
+  block:
+    - name: Create limits.d-directory if it does not exist | sysctl-31a, sysctl-31b
+      ansible.builtin.file:
+        path: /etc/security/limits.d
+        owner: root
+        group: root
+        mode: "0755"
+        state: directory
+
+    - name: Create additional limits config file -> 10.hardcore.conf | sysctl-31a, sysctl-31b
+      community.general.pam_limits:
+        dest: /etc/security/limits.d/10.hardcore.conf
+        domain: "*"
+        limit_type: hard
+        limit_item: core
+        value: "0"
+        comment: Prevent core dumps for all users. These are usually not needed and may contain sensitive information
+      when: not ansible_check_mode  # the directory needs to be created first, which does not happen in check_mode
+
+    - name: Set 10.hardcore.conf perms to 0400 and root ownership
+      ansible.builtin.file:
+        path: /etc/security/limits.d/10.hardcore.conf
+        owner: root
+        group: root
+        mode: "0440"
+        state: touch
+        modification_time: preserve
+        access_time: preserve
+
+    - name: Create coredump.conf.d-directory if it does not exist
+      ansible.builtin.file:
+        path: /etc/systemd/coredump.conf.d
+        owner: root
+        group: root
+        mode: "0755"
+        state: directory
+      when: ansible_service_mgr == "systemd"
+
+    - name: Create custom.conf for disabling coredumps
+      ansible.builtin.template:
+        src: etc/systemd/coredump.conf.d/coredumps.conf.j2
+        dest: /etc/systemd/coredump.conf.d/custom.conf
+        owner: root
+        group: root
+        mode: "0644"
+      when: ansible_service_mgr == "systemd"
+      notify: Reload systemd
+
+- name: Enable coredumps
+  when: os_security_kernel_enable_core_dump | bool
+  block:
+    - name: Remove coredump.conf.d directory with files
+      ansible.builtin.file:
+        path: /etc/systemd/coredump.conf.d
+        state: absent
+      when: ansible_service_mgr == "systemd"
+      notify: Reload systemd
+
+    - name: Remove 10.hardcore.conf config file
+      ansible.builtin.file:
+        path: /etc/security/limits.d/10.hardcore.conf
+        state: absent

@@ -1,0 +1,27 @@
+af-packet:
+  - interface: >-
+	{% set found_interface = false %}
+	{% for interface, data in ansible_facts['interface'] | dictsort %}
+	  {% if not found_interface %}
+	    {% for ip in data['ipv4']['address'] %}
+	      {% if ip.startswith('192.168.174.') %}
+	        {{ interface }}
+	        {% set found_interface = true %}
+	      {% endif %}
+	    {% endfor %}
+	  {% endif %}
+	{% endfor %}
+    cluster-id: 99
+    cluster-type: cluster_flow
+    defrag: yes
+
+#<ossec_config>
+#  <client>
+#    <server>
+#      <address>{% for ip in ansible_facts['ansible_all_ipv4_addresses'] %}
+#                 {% if ip | ipaddr('192.168.174.0/24') %}
+#                   {{ ip }}
+#                   {% break %}
+#                 {% endif %}
+#               {% endfor %}</address>
+#      <port>1514</port>

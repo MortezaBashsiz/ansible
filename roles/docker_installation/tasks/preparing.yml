@@ -1,0 +1,20 @@
+---
+- name: install docker dependencies
+  ansible.builtin.package:
+    name: "{{ docker_dependencies }}"
+    state: present
+
+- name: add apt signing key (debian)
+  ansible.builtin.apt_key:
+    url: "{{ docker_repo.gpg_url }}"
+    validate_certs: false
+  become: true
+
+- name: install official docker repositories for debian based
+  ansible.builtin.template:
+    src: etc/apt/sources.list.d/docker-ce.list.j2
+    dest: /etc/apt/sources.list.d/docker-ce.list
+    mode: 0644
+    owner: root
+    group: root
+

@@ -1,0 +1,6 @@
+- name: Creating "{{ inventory_hostname }}" VMs
+  hosts: template
+  become: true
+  gather_facts: false
+  roles:
+    - { role: create_vms, tags: 'create_vms' }

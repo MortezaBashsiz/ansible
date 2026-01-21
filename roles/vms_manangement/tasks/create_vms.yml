@@ -1,0 +1,70 @@
+---
+- name: Install multi python packages
+  ansible.builtin.pip:
+    name:
+      - pyvmomi
+  delegate_to: localhost
+  run_once: true
+
+
+- name: Create a VM folder on given datacenter
+  community.vmware.vcenter_folder:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    datacenter: "{{ DC_NAME }}"
+    folder_name: "{{ VM_FOLDER }}"
+    folder_type: vm
+    state: present
+  delegate_to: localhost
+
+- name: Create a virtual machine from a template
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    datacenter: "{{ DC_NAME }}"
+    folder: "{{ VM_FOLDER }}"
+    name: "{{ inventory_hostname }}"
+    state: poweredon
+    template: "{{ VM_TEMPLATE }}"
+    disk:
+    - size_gb: "{{ DISK_SIZE }}"
+      type: thin
+      datastore: "{{ DATASTORE_NAME }}"
+    hardware:
+      memory_mb: "{{ MEMORY_SIZE }}"
+      num_cpus: "{{ CPU_SIZE }}"
+      num_cpu_cores_per_socket: 3
+      hotadd_cpu: true
+      hotremove_cpu: true
+      hotadd_memory: true
+      boot_firmware: "efi"
+    networks:
+    - name: "{{ NETWORK_NAME }}"
+      ip: "{{ IPADDRESS }}"
+      netmask: "{{ SUBNET_MASK }}"
+      gateway: "{{GATEWAY }}"
+    customization:
+      timezone: Asia/Tehran
+      domain: "domain.com"
+      dns_servers:
+        - 8.8.8.8
+        - 4.2.2.4
+    wait_for_ip_address: true
+  delegate_to: localhost
+
+
+- name: Update for system defaults config.
+  community.vmware.vmware_host_auto_start:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    esxi_hostname: "{{ ESXI_NAME }}"
+    system_defaults:
+      enabled: true
+      start_delay: 10
+  delegate_to: localhost

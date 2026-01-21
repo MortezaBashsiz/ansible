@@ -1,0 +1,7 @@
+- name: hardenging
+  hosts: template
+  become: true
+  gather_facts: True
+  roles:
+    - ssh_hardening
+    - os_hardening

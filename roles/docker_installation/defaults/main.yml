@@ -1,0 +1,55 @@
+---
+## choose centos docker repo channel enable status
+docker_repo:
+  channel:
+    stable_enabled: true
+    test_enabled: false
+    nightly_enabled: false
+  gpg_url: https://repo.mecan.ir/repository/ubuntu-docker/gpg # https://download.docker.com/linux/ubuntu/gpg
+  repo_url: https://repo.mecan.ir/repository/ubuntu-docker/   # https://download.docker.com/linux/
+
+
+docker_dependencies:
+  - acl
+  - python3-pip
+  - python3-docker
+  - python3-requests
+  - python3-urllib3
+  - python3-virtualenv
+  - net-tools
+  - iproute2
+  - gpg
+
+docker_packages:
+  - containerd.io
+  - docker-ce
+  - docker-buildx-plugin
+  - docker-ce-cli
+  - docker-ce-rootless-extras
+  - docker-compose-plugin
+
+docker_config:
+  proxy:
+    enable: true
+    http_url: "http://172.25.25.250:2002/"
+    https_url: "http://172.25.25.250:2002/" 
+    no_proxy_url: "nexus.zaraamad.ir,hub.mecan.ir,hub.dockerps.ir,hub.intrepo.cname.ir,127.0.0.0/8"
+  logging:
+    enable: true
+    log_driver: "json-file"
+    lables: "{{ ansible_hostname }}"
+    max_file: 5
+    max_size: 200m
+  mirror_registry:
+    enable: true
+    urls: "https://docker.arvancloud.ir"
+  insecure_registry:
+    enable: true
+    urls: "https://docker.arvancloud.ir"
+  live_restore:
+    enable: true
+  experimental:
+    enable: true
+
+docker_user:
+  - hojat
